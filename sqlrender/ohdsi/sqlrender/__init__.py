@@ -15,7 +15,7 @@ from rpy2.robjects.packages import importr
 #
 # r interface
 #
-sql_render_r = importr('sql_render')
+sql_render_r = importr('SqlRender')
 base_r = importr('base')
 
 
