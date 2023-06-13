@@ -13,7 +13,7 @@ with codecs.open(parent_dir / 'README.md', encoding='utf-8') as f:
 
 # setup the package
 setup(
-    name='circe',
+    name='ohdsi-circe',
     version='0.1.0',
     description='Python wrapper for the OHDSI R packages',
     long_description=long_description,
