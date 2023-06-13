@@ -10,7 +10,6 @@ database_connector_r = importr('DatabaseConnector')
 
 class Connect:
 
-
     @staticmethod
     def create_connection_details(
         dbms: str, user: str | None = None, password: str | None = None,

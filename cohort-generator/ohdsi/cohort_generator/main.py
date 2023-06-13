@@ -12,8 +12,12 @@ print("importing R cohort generator")
 ch = importr('CohortGenerator')
 
 cohort_to_create = ch.createEmptyCohortDefinitionSet()
+
+# circe
 cohort = cohort_expression_from_json(cohort_json)
 sql = build_cohort_query(cohort)
+##
+
 cohort_table_names = ch.getCohortTableNames(cohortTable = "my_cohort_table")
 
 print("importing R eunomia")

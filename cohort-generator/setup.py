@@ -28,7 +28,7 @@ setup(
         'dev': []
     },
     package_data={
-        'ohdsi.cohort_generator': [
+        'ohdsi.cohort_generator.data': [
             'data/*'
         ],
     },
