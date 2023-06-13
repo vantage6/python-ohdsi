@@ -6,10 +6,9 @@ OMOP data sources in vantage6.
 Packages to be wrapped:
 - [ ] [Capr](https://github.com/OHDSI/Capr)
 - [X] [CirceR](https://github.com/OHDSI/CirceR)
-- [ ] [CohortGenerator](https://github.com/OHDSI/cohortgenerator)
-- [ ] [SqlRender](https://github.com/OHDSI/SqlRender)
-- [ ] [DatabaseConnector](https://github.com/OHDSI/DatabaseConnector)
+- [X] [CohortGenerator](https://github.com/OHDSI/cohortgenerator)
+- [X] [SqlRender](https://github.com/OHDSI/SqlRender)
+- [X] [DatabaseConnector](https://github.com/OHDSI/DatabaseConnector)
 - [ ] [FeatureExtraction](https://github.com/OHDSI/FeatureExtraction)
 
 Release packages: `ohdsi-circe`, `ohdsi-capr`, `ohdsi-cohortgenerator`, `ohdsi-sqlrender`, `ohdsi-databaseconnector`, `ohdsi-featureextraction`
-
