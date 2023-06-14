@@ -9,7 +9,8 @@ help:
 	@echo "install       - install all packages"
 	@echo "install-dev   - install all packages in editable mode"
 	@echo "build         - build all packages"
-	@echo "publish       - publish all packages to pypi"
+	@echo "publish       - publish all packages to pypi, needs USERNAME and"
+	@echo "                PASSWORD"
 
 install:
 	$(foreach package, $(PACKAGES), \
@@ -27,6 +28,7 @@ build:
 publish:
 	# publish after you have built the packages
 	$(foreach package, $(PACKAGES), \
-		cd $(package) && twine upload --repository pypi dist/* && cd ..; \
+		cd $(package) && twine upload --repository pypi dist/* \
+		-u $(USERNAME) -p $(PASSWORD) --disable-progress-bar && cd ..; \
 	)
 
