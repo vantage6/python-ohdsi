@@ -1,0 +1,35 @@
+name: Build & Release
+
+on:
+    release:
+        types: [created]
+
+jobs:
+
+    # Build the namespace packages
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup Python
+              uses: actions/setup-python@v3
+              with:
+                  python-version: "3.10"
+
+            - name: Install dependencies
+              run: |
+                pip install twine
+
+            - name: Build
+              run: |
+                  echo "Building ${{ github.event.release.tag_name }}"
+                  echo "Release notes: ${{ github.event.release.body }}"
+                  make build
+
+            - name: Upload
+              run: |
+                    echo "Uploading ${{ github.event.release.tag_name }}"
+                    make publish \
+                        USERNAME=__token__ \
+                        PASSWORD=${{ secrets.PYPI_TOKEN }}
