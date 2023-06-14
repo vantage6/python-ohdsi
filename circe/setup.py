@@ -11,10 +11,14 @@ parent_dir = here.parent.absolute()
 with codecs.open(parent_dir / 'README.md', encoding='utf-8') as f:
     long_description = f.read()
 
+# get the version from the parent dir
+with open(parent_dir / 'VERSION') as f:
+    version = f.read().strip()
+
 # setup the package
 setup(
     name='ohdsi-circe',
-    version='0.1.0',
+    version=version,
     description='Python wrapper for the OHDSI R packages',
     long_description=long_description,
     long_description_content_type='text/markdown',
