@@ -127,3 +127,52 @@ class Connect:
         >>> Connect.disconnect(connection)
         """
         database_connector_r.disconnect(connection)
+
+
+class Sql:
+
+    @staticmethod
+    def query_sql(connection: RS4, sql: str) -> RS4:
+        """
+        Query a database.
+
+        Parameters
+        ----------
+        connection : RS4
+            The database connection.
+        sql : str
+            The SQL query.
+
+        Returns
+        -------
+        RS4
+            The query result.
+
+        Examples
+        --------
+        >>> Sql.query_sql(connection, sql)
+        >>> Sql.query_sql(connection, "SELECT COUNT(*) FROM person")
+        """
+        return database_connector_r.querySql(connection, sql)
+
+    @staticmethod
+    def execute_sql(connection: RS4, sql: str) -> None:
+        """
+        Execute a SQL statement.
+
+        Parameters
+        ----------
+        connection : RS4
+            The database connection.
+        sql : str
+            The SQL statement.
+
+        Examples
+        --------
+        >>> Sql.execute_sql(connection, sql)
+        >>> Sql.execute_sql(connection, "DROP TABLE IF EXISTS person")
+        >>> Sql.execute_sql(
+        ...     conn, "CREATE TABLE x (k INT); CREATE TABLE y (k INT);"
+        ... )
+        """
+        database_connector_r.executeSql(connection, sql)
