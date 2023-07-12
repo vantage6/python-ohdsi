@@ -21,9 +21,9 @@ from rpy2.robjects.packages import importr
 # as the package is not installed. In this case, we set the variable to None
 # so that the documentation can be built.
 if os.environ.get('IGNORE_R_IMPORTS', False):
-    sql_render_r = importr('SqlRender')
-else:
     sql_render_r = None
+else:
+    sql_render_r = importr('SqlRender')
 
 try:
     base_r = importr('base')

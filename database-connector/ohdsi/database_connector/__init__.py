@@ -10,9 +10,9 @@ from rpy2.robjects.methods import RS4
 # as the package is not installed. In this case, we set the variable to None
 # so that the documentation can be built.
 if os.environ.get('IGNORE_R_IMPORTS', False):
-    database_connector_r = importr('DatabaseConnector')
-else:
     database_connector_r = None
+else:
+    database_connector_r = importr('DatabaseConnector')
 
 
 class Connect:

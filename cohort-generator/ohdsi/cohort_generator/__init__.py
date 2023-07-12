@@ -10,11 +10,11 @@ from rpy2.robjects.packages import importr
 # as the package is not installed. In this case, we set the variable to None
 # so that the documentation can be built.
 if os.environ.get('IGNORE_R_IMPORTS', False):
-    cohort_generator = importr('CohortGenerator')
-    base_r = importr('base')
-else:
     cohort_generator = None
     base_r = None
+else:
+    cohort_generator = importr('CohortGenerator')
+    base_r = importr('base')
 
 
 class CohortDefinitionSet:
