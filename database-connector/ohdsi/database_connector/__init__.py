@@ -1,3 +1,5 @@
+import os
+
 from importlib.resources import files
 
 from rpy2.robjects.packages import importr
@@ -7,10 +9,9 @@ from rpy2.robjects.methods import RS4
 # When building documentation for the project, the following import will fail
 # as the package is not installed. In this case, we set the variable to None
 # so that the documentation can be built.
-try:
+if os.environ.get('IGNORE_R_IMPORTS', False):
     database_connector_r = importr('DatabaseConnector')
-except ImportError:
-    # TODO: we should notify the user
+else:
     database_connector_r = None
 
 

@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 from rpy2.robjects.methods import RS4
 from rpy2.robjects.vectors import StrVector
@@ -18,10 +20,9 @@ from rpy2.robjects.packages import importr
 # When building documentation for the project, the following import will fail
 # as the package is not installed. In this case, we set the variable to None
 # so that the documentation can be built.
-try:
+if os.environ.get('IGNORE_R_IMPORTS', False):
     sql_render_r = importr('SqlRender')
-except ImportError:
-    # TODO we should notify the user
+else:
     sql_render_r = None
 
 try:

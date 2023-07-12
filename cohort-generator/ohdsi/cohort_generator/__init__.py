@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 
 from rpy2.robjects.methods import RS4
@@ -7,15 +9,11 @@ from rpy2.robjects.packages import importr
 # When building documentation for the project, the following import will fail
 # as the package is not installed. In this case, we set the variable to None
 # so that the documentation can be built.
-try:
+if os.environ.get('IGNORE_R_IMPORTS', False):
     cohort_generator = importr('CohortGenerator')
-except ImportError:
-    # TODO: we should notify the user
-    cohort_generator = None
-
-try:
     base_r = importr('base')
-except ImportError:
+else:
+    cohort_generator = None
     base_r = None
 
 
