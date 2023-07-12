@@ -15,8 +15,20 @@ from rpy2.robjects.packages import importr
 #
 # r interface
 #
-sql_render_r = importr('SqlRender')
-base_r = importr('base')
+# When building documentation for the project, the following import will fail
+# as the package is not installed. In this case, we set the variable to None
+# so that the documentation can be built.
+try:
+    sql_render_r = importr('SqlRender')
+except ImportError:
+    # TODO we should notify the user
+    sql_render_r = None
+
+try:
+    base_r = importr('base')
+except ImportError:
+    # TODO we should notify the user
+    base_r = None
 
 
 #

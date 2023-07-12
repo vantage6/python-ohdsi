@@ -1,5 +1,7 @@
 import json
 
+from pathlib import Path
+
 from rpy2 import robjects
 from rpy2.robjects.methods import RS4
 from rpy2.robjects.vectors import StrVector
@@ -15,10 +17,22 @@ def _py_none_to_null(py_obj):
     return robjects.NULL
 
 
+@robjects.default_converter.py2rpy.register(Path)
+def _py_path_to_str(py_obj):
+    return robjects.StrVector(str(py_obj))
+
+
 #
 # R interface
 #
-circe_r = importr('CirceR')
+# When building documentation for the project, the following import will fail
+# as the package is not installed. In this case, we set the variable to None
+# so that the documentation can be built.
+try:
+    circe_r = importr('CirceR')
+except ImportError:
+    # TODO: we should notify the user
+    circe_r = None
 
 
 #

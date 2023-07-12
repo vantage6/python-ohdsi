@@ -1,8 +1,144 @@
+from pathlib import Path
+
 from rpy2.robjects.methods import RS4
-from rpy2.robjects.vectors import ListVector, StrSexpVector
+from rpy2.robjects.vectors import ListVector
 from rpy2.robjects.packages import importr
 
-cohort_generator = importr('CohortGenerator')
+# When building documentation for the project, the following import will fail
+# as the package is not installed. In this case, we set the variable to None
+# so that the documentation can be built.
+try:
+    cohort_generator = importr('CohortGenerator')
+except ImportError:
+    # TODO: we should notify the user
+    cohort_generator = None
+
+try:
+    base_r = importr('base')
+except ImportError:
+    base_r = None
+
+
+class CohortDefinitionSet:
+
+    @staticmethod
+    def create_empty_cohort_definition_set(verbose: bool = False) -> RS4:
+        """
+        Create an empty CohortDefinitionSet object.
+
+        Parameters
+        ----------
+        verbose : bool, optional
+            When True, descriptions of each field in the data frame are
+            returned. By default False.
+        """
+        return cohort_generator.createEmptyCohortDefinitionSet(verbose)
+
+    @staticmethod
+    def save_cohort_definition_set(
+        cohort_definition_set: RS4,
+        settings_file_name: str | Path = "inst/cohorts.csv",
+        json_folder: str | Path = "inst/cohorts",
+        sql_folder: str | Path = "inst/sql/sql_server",
+        cohort_file_name_format: str = "%s",
+        cohort_file_name_value: list[str] = ["cohort_id"],
+        subset_json_folder: str | Path = "inst/cohort_subset_definitions/",
+        verbose: bool = False
+    ) -> None:
+        """
+        Save the cohort definition set to the file system
+
+        This function saves a cohort_definition_set to the file system and
+        provides options for specifying where to write the individual elements:
+        the settings file will contain the cohort information as a CSV
+        specified by the settingsFileName, the cohort JSON is written to the
+        jsonFolder and the SQL is written to the sqlFolder. We also provide a
+        way to specify the json/sql file name format using the
+        cohort_file_name_format and cohort_file_name_value parameters.
+
+        Parameters
+        ----------
+        cohort_definition_set : RS4
+            A CohortDefinitionSet object
+        settings_file_name : str, optional
+            The name of the CSV file that will hold the cohort information
+            including the cohortId and cohortName
+        json_folder : str, optional
+            The name of the folder that will hold the JSON representation
+            of the cohort if it is available in the cohortDefinitionSet
+        sql_folder : str, optional
+            The name of the folder that will hold the SQL representation
+            of the cohort
+        cohort_file_name_format : str, optional
+            Defines the format string  for naming the cohort JSON and SQL
+            files. The format string follows the standard defined in the base
+            ``sprintf`` function.
+        cohort_file_name_value : list[str], optional
+            Defines the columns in the cohortDefinitionSet to use in
+            conjunction with the cohortFileNameFormat parameter
+        subset_json_folder : str, optional
+            Defines the folder to store the subset JSON
+        verbose : bool, optional
+            When TRUE, logging messages are emitted to indicate export
+            progress. By default False.
+        """
+        return cohort_generator.saveCohortDefinitionSet(
+            cohort_definition_set, settings_file_name, json_folder, sql_folder,
+            cohort_file_name_format, cohort_file_name_value,
+            subset_json_folder, verbose
+        )
+
+
+class CohortConstruction:
+
+    @staticmethod
+    def generate_cohort_set(
+        cdm_database_schema: str,
+        cohort_definition_set: RS4,
+        connection_details: ListVector | None = None,
+        connection: RS4 | None = None,
+        temp_emulation_schema: str | None = None,
+        cohort_database_schema: str | None = None,
+        cohort_table_names: ListVector | None = None,
+        stop_on_error: bool = True,
+        incremental: bool = False,
+        incremental_folder: str | Path = None
+    ) -> RS4:
+        """
+        Generate a cohort set.
+
+        This function generates a set of cohorts in the cohort table.
+
+        Parameters
+        ----------
+        cdm_database_schema : str
+            The schema containing the CDM
+        connection_details : ListVector | None, optional
+            The connection details obtained using
+            ``Connect.create_connection_details(...)``, by default None
+        connection : None, optional
+            The connection object obtained from ``Connect.connect(...)``, by
+            default None
+        temp_emulation_schema : None, optional
+            The schema to use for temp tables, by default None
+
+
+        """
+        args = {
+            "cdmDatabaseSchema": cdm_database_schema,
+            "connectionDetails": connection_details,
+            "connection": connection,
+            "tempEmulationSchema": temp_emulation_schema,
+            "cohortDatabaseSchema": cohort_database_schema,
+            "cohortTableNames": cohort_table_names,
+            "cohortDefinitionSet": cohort_definition_set,
+            "stopOnError": stop_on_error,
+            "incremental": incremental,
+            "incrementalFolder": incremental_folder
+        }
+        # remove None values
+        args = {k: v for k, v in args.items() if v is not None}
+        return cohort_generator.generateCohortSet(**args)
 
 
 class CohortTables:
@@ -76,3 +212,56 @@ class CohortTables:
         # remove None values
         args = {k: v for k, v in args.items() if v is not None}
         return cohort_generator.createCohortTables(**args)
+
+
+class CohortCount:
+
+    @staticmethod
+    def get_cohort_counts(
+        cohort_database_schema: str,
+        connection_details: ListVector | None = None,
+        connection: RS4 | None = None,
+        cohort_table: str = "cohort",
+        cohort_ids: list[int] = [],
+        cohort_definition_set: RS4 = None,
+        database_id: int | None = None
+    ) -> RS4:
+        """
+        Get cohort counts.
+
+        Gets the counts for the specified cohort ids.
+
+        Parameters
+        ----------
+        cohort_database_schema : str
+            The schema containing the cohort tables
+        connection_details : ListVector, optional
+            The connection details, by default None
+        connection : RS4, optional
+            The connection, by default None
+        cohort_table : str, optional
+            The name of the cohort table, by default "cohort"
+        cohort_ids : list[int], optional
+            The cohort ids to get the counts for, by default []
+        cohort_definition_set : RS4, optional
+            The cohort definition set, by default None
+        database_id : str, optional
+            The database id, by default None
+
+        Returns
+        -------
+        RS4
+            A wrapped cohort counts R object
+        """
+        args = {
+            "cohortDatabaseSchema": cohort_database_schema,
+            "connectionDetails": connection_details,
+            "connection": connection,
+            "cohortTable": cohort_table,
+            "cohortIds": cohort_ids,
+            "cohortDefinitionSet": cohort_definition_set,
+            "databaseId": database_id
+        }
+        # remove None values
+        args = {k: v for k, v in args.items() if v is not None}
+        return cohort_generator.getCohortCounts(**args)

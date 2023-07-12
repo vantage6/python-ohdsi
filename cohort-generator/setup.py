@@ -32,8 +32,8 @@ setup(
         'dev': []
     },
     package_data={
-        'ohdsi.cohort_generator.data': [
-            'data/*'
+        'ohdsi.cohort_generator.cohorts': [
+            'data/cohort/*'
         ],
     },
     # entry_points={

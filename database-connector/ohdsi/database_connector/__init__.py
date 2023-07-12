@@ -4,8 +4,14 @@ from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import ListVector
 from rpy2.robjects.methods import RS4
 
-
-database_connector_r = importr('DatabaseConnector')
+# When building documentation for the project, the following import will fail
+# as the package is not installed. In this case, we set the variable to None
+# so that the documentation can be built.
+try:
+    database_connector_r = importr('DatabaseConnector')
+except ImportError:
+    # TODO: we should notify the user
+    database_connector_r = None
 
 
 class Connect:
