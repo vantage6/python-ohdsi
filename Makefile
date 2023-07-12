@@ -11,6 +11,11 @@ help:
 	@echo "build         - build all packages"
 	@echo "publish       - publish all packages to pypi, needs USERNAME and"
 	@echo "                PASSWORD"
+	@echo "set-version   - set the version of all packages, needs VERSION"
+
+set-version:
+	echo $(VERSION) > VERSION;
+
 
 install:
 	$(foreach package, $(PACKAGES), \
