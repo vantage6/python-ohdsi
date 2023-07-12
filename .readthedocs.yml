@@ -5,6 +5,9 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.10"
+  # install R
+  apt_packages:
+    - r-base
 
 python:
   install:
