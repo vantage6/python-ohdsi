@@ -3,7 +3,8 @@ PACKAGES = \
 	circe \
 	cohort-generator \
 	database-connector \
-	sqlrender
+	sqlrender \
+	feature-extraction
 
 help:
 	@echo "install       - install all packages"

@@ -26,3 +26,7 @@ Packages to be wrapped:
       a REST API)
 
 Release packages: `ohdsi-circe`, `ohdsi-capr`, `ohdsi-cohortgenerator`, `ohdsi-sqlrender`, `ohdsi-databaseconnector`, `ohdsi-featureextraction`
+
+# Some notes
+- installing some OHDSI packages required the `--no-multiarch` flag:
+  INSTALL_opts=c("--no-multiarch").
