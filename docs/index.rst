@@ -20,6 +20,7 @@ Welcome!
    sql_render
    database_connector
    cohort_generator
+   feature_extraction
 
 
 Indices and tables
