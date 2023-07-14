@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.abspath('../circe'))
 sys.path.insert(0, os.path.abspath('../cohort-generator'))
 sys.path.insert(0, os.path.abspath('../database-connector'))
 sys.path.insert(0, os.path.abspath('../sqlrender'))
+sys.path.insert(0, os.path.abspath('../feature-extraction'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
