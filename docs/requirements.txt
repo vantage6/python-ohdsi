@@ -2,6 +2,7 @@
 -r ../cohort-generator/requirements.txt
 -r ../circe/requirements.txt
 -r ../sqlrender/requirements.txt
+-r ../feature-extraction/requirements.txt
 sphinx==5.3.0
 sphinx-autobuild
 sphinx-autodoc-typehints

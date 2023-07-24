@@ -1,0 +1,1 @@
+docker run -p 8000:8000 -e POSTGRES_HOST=host.docker.internal ohdsi-api

@@ -2,7 +2,7 @@ from ohdsi.database_connector import Connect, Sql
 
 connection_details = Connect.create_connection_details(
     "postgresql",
-    server="localhost/postgres",
+    server="host.docker.internal/postgres",
     user="postgres",
     password="matchstick-wrapper-sliding-bulb",
     port=5432

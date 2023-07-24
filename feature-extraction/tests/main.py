@@ -18,7 +18,7 @@ detailed_covars = DetailedCovariateSettings.\
 
 
 from ohdsi.database_connector import (
-    Connect
+    Connect, Sql
 )
 
 connection_details = Connect.create_connection_details(
@@ -29,6 +29,9 @@ connection_details = Connect.create_connection_details(
     port=5432
 )
 con = Connect.connect(connection_details)
+
+res = Sql.query_sql(con, "SELECT * FROM omopcdm.condition_era")
+print(res)
 
 data = GetCovariates.get_db_covariate_data(
     cdm_database_schema="omopcdm",
