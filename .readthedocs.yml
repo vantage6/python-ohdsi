@@ -8,6 +8,7 @@ build:
   # install R
   apt_packages:
     - r-base
+    - plantuml
 
 python:
   install:

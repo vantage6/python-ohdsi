@@ -31,11 +31,11 @@ class Connect:
         Creates a list containing all details needed to connect to a database.
         There are three ways to call this function:
 
-        - ``create_connection_details(dbms, user, password, server, port,
-                                      extraSettings, oracleDriver,
+        - ``create_connection_details(dbms, user, password, server, port, \
+                                      extraSettings, oracleDriver, \
                                       pathToDriver)``
         - ``create_connection_details(dbms, connectionString, pathToDriver)``
-        - ``create_connection_details(dbms, connectionString, user, password,
+        - ``create_connection_details(dbms, connectionString, user, password, \
                                       pathToDriver)``
 
         Parameters

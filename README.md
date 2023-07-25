@@ -7,6 +7,13 @@ Make sure you have a working R environment with the OHDSI packages installed.
 # Building documentation
 ```bash
 cd docs
+export
+make html
+```
+
+```powershell
+cd docs
+Set-Item -Path Env:IGNORE_R_IMPORTS -Value True
 make html
 ```
 

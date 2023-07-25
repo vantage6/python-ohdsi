@@ -29,7 +29,8 @@ author = (
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon',
               'sphinx_autodoc_typehints', 'sphinx.ext.autosectionlabel',
-              'sphinx.ext.intersphinx', 'sphinx_click.ext']
+              'sphinx.ext.intersphinx', 'sphinx_click.ext',
+              'sphinxcontrib.plantuml']
 
 napoleon_use_ivar = True
 
@@ -53,3 +54,5 @@ add_module_names = False
 pygments_style = None
 
 numfig = True
+
+plantuml_output_format = 'svg_img'
