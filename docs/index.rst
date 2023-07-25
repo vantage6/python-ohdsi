@@ -97,7 +97,6 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 .. uml::
 
     @startuml
-    !include _static/theme.puml
 
     database OMOP as OMOP
 
