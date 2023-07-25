@@ -70,9 +70,9 @@ risks, therefore using the API model `vantage6-http-interface`_ is preferred.
     !include _static/theme.puml
 
 
-    card "vantage6-node" as v6 {
-        rectangle "node" as core
-        rectangle "ssh-tunnel" as tunnel
+    card vantage6_node as v6 {
+        rectangle node as core
+        rectangle ssh_tunnel as tunnel
     }
 
     database OMOP
@@ -101,13 +101,13 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 
     database OMOP as OMOP
 
-    folder "python-ohdsi" as API {
+    folder python_ohdsi as API {
         interface RestAPI
         rectangle DatabaseConnector
         rectangle FeatureExtraction
     }
 
-    card "vantage6-node" as v6 {
+    card vantage6_node as v6 {
 
         rectangle node
         rectangle whitelisting
