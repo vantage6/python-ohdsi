@@ -74,7 +74,7 @@ risks, therefore using the API model `vantage6-http-interface`_ is preferred.
 .. uml::
 
     @startuml
-        !theme mars
+
         card vantage6_node as v6 {
             rectangle node as core
             rectangle ssh_tunnel as tunnel
@@ -99,7 +99,6 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 .. uml::
 
     @startuml
-    !theme "superhero-outline"
 
     database OMOP as OMOP
 
