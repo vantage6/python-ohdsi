@@ -1,4 +1,5 @@
 import os
+import json
 
 from rpy2 import robjects
 from rpy2.robjects.methods import RS4
@@ -788,10 +789,11 @@ class DetailedCovariateSettings:
         ...     included_covariate_ids = []
         ... )
         """
+        parameters_json = json.dumps(parameters)
         return extractor_r.createAnalysisDetails(
             analysis_id,
             sql_file_name,
-            parameters,
+            parameters_json,
             included_covariate_concept_ids,
             add_descendants_to_include,
             excluded_covariate_concept_ids,
@@ -940,7 +942,7 @@ class DetailedCovariateSettings:
 class DefaultTemporalCovariateSettings:
 
     @staticmethod
-    def createTemporalCovariateSettings(
+    def create_temporal_covariate_settings(
         use_demographics_gender: bool = False,
         use_demographics_age: bool = False,
         use_demographics_age_group: bool = False,
@@ -1154,6 +1156,10 @@ class DefaultTemporalCovariateSettings:
         ...     use_demographics_age=True,
         ... )
         """
+
+        temporal_start_days_list = list(temporal_start_days)
+        temporal_end_days_list = list(temporal_end_days)
+
         return extractor_r.createTemporalCovariateSettings(
             use_demographics_gender,
             use_demographics_age,
@@ -1196,8 +1202,8 @@ class DefaultTemporalCovariateSettings:
             use_distinct_observation_count,
             use_visit_count,
             use_visit_concept_count,
-            temporal_start_days,
-            temporal_end_days,
+            temporal_start_days_list,
+            temporal_end_days_list,
             included_covariate_concept_ids,
             add_descendants_to_include,
             excluded_covariate_concept_ids,

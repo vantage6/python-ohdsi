@@ -98,7 +98,7 @@ class RenderSql:
 
     @staticmethod
     def translate(sql: str, target_dialect: str,
-                  temp_emulation_schema: str | None) -> StrVector:
+                  temp_emulation_schema: str | None = None) -> StrVector:
         """
         ``translate`` translates SQL from one dialect to another.
 
@@ -131,7 +131,7 @@ class RenderSql:
 
     @staticmethod
     def translate_single_statement(
-        sql: str, target_dialect: str, temp_emulation_schema: str | None
+        sql: str, target_dialect: str, temp_emulation_schema: str | None = None
     ) -> StrVector:
         """
         Translates a single SQL statement from one dialect to another.
@@ -294,7 +294,7 @@ class HelperFunctions:
     @staticmethod
     def translate_sql_file(source_file: str | Path, target_file: str | Path,
                            target_dialect: str,
-                           temp_emulation_schema: str | None) -> None:
+                           temp_emulation_schema: str | None = None) -> None:
         """
         Translate a SQL file.
 
@@ -334,7 +334,8 @@ class HelperFunctions:
 
     @staticmethod
     def load_render_translate_sql(sql_file: str | Path, package_name: str,
-                                  dbms: str, temp_emulation_schema: str | None,
+                                  dbms: str,
+                                  temp_emulation_schema: str | None = None,
                                   warn_on_missing_parameters: bool = True) \
             -> StrVector:
         """
