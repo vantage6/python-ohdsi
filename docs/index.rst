@@ -65,6 +65,7 @@ to the machine that hosts the OMOP database. An SSH tunnel brings additional
 risks, therefore using the API model `vantage6-http-interface`_ is preferred.
 
 .. uml::
+
     @startuml
     Alice -> Bob: test
     @enduml
