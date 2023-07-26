@@ -67,7 +67,7 @@ risks, therefore using the API model `vantage6-http-interface`_ is preferred.
 .. uml::
 
     @startuml
-    !theme superhero-outline
+    !theme "superhero-outline"
 
         card vantage6_node as v6 {
             rectangle node as core
@@ -96,7 +96,7 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 .. uml::
 
     @startuml
-    !theme superhero-outline
+    !theme "superhero-outline"
 
     database OMOP as OMOP
 
