@@ -75,13 +75,20 @@ risks, therefore using the API model `vantage6-http-interface`_ is preferred.
 
     @startuml
 
-        card vantage6_node as v6 {
-            rectangle node as core
-            rectangle ssh_tunnel as tunnel
-        }
-        database OMOP
-        core -right-> tunnel : SQL
-        tunnel -> OMOP : SQL
+    card vantage6_node as v6 {
+        rectangle node as core
+        rectangle ssh_tunnel as tunnel
+    }
+    database OMOP
+    core -right-> tunnel : SQL
+    tunnel -> OMOP : SQL
+    @enduml
+
+
+.. uml::
+
+    @startuml
+    checkversion
     @enduml
 
 
