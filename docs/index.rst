@@ -65,20 +65,22 @@ to the machine that hosts the OMOP database. An SSH tunnel brings additional
 risks, therefore using the API model `vantage6-http-interface`_ is preferred.
 
 .. uml::
+    @startuml
+    Alice -> Bob: test
+    @enduml
+
+
+.. uml::
 
     @startuml
-    !theme "mars"
-
+        !theme "mars"
         card vantage6_node as v6 {
             rectangle node as core
             rectangle ssh_tunnel as tunnel
         }
-
         database OMOP
-
         core -right-> tunnel : SQL
         tunnel -> OMOP : SQL
-
     @enduml
 
 
@@ -96,7 +98,7 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 .. uml::
 
     @startuml
-    !theme "mars"
+    !theme "superhero-outline"
 
     database OMOP as OMOP
 
