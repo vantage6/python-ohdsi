@@ -67,18 +67,17 @@ risks, therefore using the API model `vantage6-http-interface`_ is preferred.
 .. uml::
 
     @startuml
-    !include _static/theme.puml
+    !theme superhero-outline
 
+        card vantage6_node as v6 {
+            rectangle node as core
+            rectangle ssh_tunnel as tunnel
+        }
 
-    card vantage6_node as v6 {
-        rectangle node as core
-        rectangle ssh_tunnel as tunnel
-    }
+        database OMOP
 
-    database OMOP
-
-    core -right-> tunnel : SQL
-    tunnel -> OMOP : SQL
+        core -right-> tunnel : SQL
+        tunnel -> OMOP : SQL
 
     @enduml
 
@@ -97,6 +96,7 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 .. uml::
 
     @startuml
+    !theme superhero-outline
 
     database OMOP as OMOP
 
@@ -114,12 +114,10 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
     }
 
     node -> whitelisting
-
     whitelisting -> RestAPI : HTTP
     RestAPI -> FeatureExtraction : HTTP
     FeatureExtraction --> DatabaseConnector
     OMOP <- DatabaseConnector  : SQL
-
     @enduml
 
 
