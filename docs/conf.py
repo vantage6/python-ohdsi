@@ -58,4 +58,5 @@ numfig = True
 plantuml_output_format = 'svg_img'
 
 # plantuml = ['java', '-jar', 'docs/java/plantuml.jar']
-plantuml = 'java -Djava.awt.headless=true -jar /usr/share/plantuml/plantuml.jar'
+local_plantuml_path = os.path.join(os.path.dirname(__file__), "java", "plantuml.jar")
+plantuml = f"java -Djava.awt.headless=true -jar {local_plantuml_path}"

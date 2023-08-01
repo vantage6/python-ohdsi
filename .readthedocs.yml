@@ -9,6 +9,8 @@ build:
   apt_packages:
     - r-base
     - default-jdk
+    - graphviz
+
 
 python:
   install:
