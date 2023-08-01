@@ -8,7 +8,7 @@ build:
   # install R
   apt_packages:
     - r-base
-    - plantuml
+    - default-jdk
 
 python:
   install:
