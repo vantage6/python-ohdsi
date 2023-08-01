@@ -56,3 +56,5 @@ pygments_style = None
 numfig = True
 
 plantuml_output_format = 'svg_img'
+
+plantuml = 'java -jar /docs/java/plantuml.jar'
