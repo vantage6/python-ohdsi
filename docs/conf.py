@@ -57,4 +57,5 @@ numfig = True
 
 plantuml_output_format = 'svg_img'
 
-plantuml = ['java', '-jar', 'docs/java/plantuml.jar']
+# plantuml = ['java', '-jar', 'docs/java/plantuml.jar']
+plantuml = 'java -Djava.awt.headless=true -jar /usr/share/plantuml/plantuml.jar'
