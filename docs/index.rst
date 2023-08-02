@@ -1,10 +1,5 @@
-.. python-ohdsi documentation master file, created by
-   sphinx-quickstart on Wed Jul 12 08:30:53 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome!
-========
+Introduction
+============
 
 .. warning::
 
@@ -123,14 +118,12 @@ Table of Contents
 =================
 
 .. toctree::
+   :numbered: 2
    :maxdepth: 3
 
    self
-   circe
-   sql_render
-   database_connector
-   cohort_generator
-   feature_extraction
+   libraries/index
+   api/index
 
 
 Indices and tables
