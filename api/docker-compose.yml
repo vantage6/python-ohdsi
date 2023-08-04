@@ -1,0 +1,49 @@
+services:
+
+  # OHDSI API
+  ohdsi-api:
+    build: .
+    image: ohdsi-api
+    ports:
+      - 5000:5000
+    container_name: ohdsi-api
+    env_file:
+      - .env
+    # TODO env for connection to the OMOP DB
+    command: ["python", "run.py"]
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    container_name: rabbitmq
+
+  # PostgreSQL
+  db:
+    image: postgres:9.6
+    ports:
+      - 5432:5432
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=ohdsi
+      - POSTGRES_PASSWORD=ohdsi
+      - POSTGRES_DB=ohdsi
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  celery-worker:
+    build: .
+    image: ohdsi-api
+    container_name: celery-worker
+    command: celery -A src.celery_app worker --loglevel=info
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+      - db
+
+

@@ -20,8 +20,6 @@ RUN apt-get update
 RUN apt-get install -y r-base
 
 RUN R CMD javareconf
-RUN R -e ".libPaths()"
-RUN Rscript -e ".libPaths()"
 
 # RUN R -e "install.packages('devtools', repos='http://cran.us.r-project.org')"
 RUN Rscript -e "install.packages('DatabaseConnector')"
@@ -37,6 +35,8 @@ RUN pip install -r requirements.txt
 EXPOSE ${PORT}
 
 ENV LD_LIBRARY_PATH=/usr/lib/jvm/java-17-openjdk-amd64/lib/server/
+
+RUN pip install psycopg2-binary
 # start the flask app
 # CMD uwsgi --http 0.0.0.0:${PORT} --master -p 4 -w run:app
 CMD gunicorn -b 0.0.0.0 -w 1 'run:app'
