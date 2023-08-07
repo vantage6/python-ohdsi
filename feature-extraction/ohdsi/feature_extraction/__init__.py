@@ -3,10 +3,7 @@ import json
 
 from rpy2 import robjects
 from rpy2.robjects.methods import RS4
-from rpy2.robjects.vectors import ListVector
-from rpy2.robjects.vectors import DataFrame
-from rpy2.robjects.vectors import BoolVector
-
+from rpy2.robjects.vectors import BoolVector, DataFrame, IntVector, ListVector
 from rpy2.robjects.packages import importr
 
 
@@ -27,7 +24,7 @@ def _py_none_to_null(py_obj):
 class Aggregation:
 
     @staticmethod
-    def aggregate_covariates (covariate_data) -> RS4:
+    def aggregate_covariates(covariate_data) -> RS4:
         """
         Aggregate covariate data
 
@@ -110,7 +107,7 @@ class CompareCohorts:
 class CovariateData:
     
     @staticmethod
-    def save_covariate_data (covariate_data: RS4, file: str):
+    def save_covariate_data(covariate_data: RS4, file: str):
         """
         Save the covariate data to folder
 
@@ -137,10 +134,10 @@ class CovariateData:
         ...     file = filename
         ... )
         """
-        return extractor_r.saveCovariateData (covariate_data, file)
+        return extractor_r.saveCovariateData(covariate_data, file)
     
     @staticmethod
-    def load_covariate_data (file: str, read_only: bool | None = False):
+    def load_covariate_data(file: str, read_only: bool | None = False):
         """
         Load the covariate data from a folder
 
@@ -163,7 +160,7 @@ class CovariateData:
         --------
         >>> covariate_data = CovariateData.load_covariate_data(filename)
         """
-        return extractor_r.loadCovariateData (file, read_only)
+        return extractor_r.loadCovariateData(file, read_only)
 
     @staticmethod
     def is_covariate_data(x) -> BoolVector:
@@ -1868,7 +1865,7 @@ class GetDefaultCovariates:
 class HelperFunctions:
 
     @staticmethod
-    def filter_by_row_id(covariate_data: RS4, row_ids: list = []) -> RS4:
+    def filter_by_row_id(covariate_data: RS4, row_ids: list[int]) -> RS4:
         """
         Filter covariates by row ID
 
@@ -1891,7 +1888,8 @@ class HelperFunctions:
         ...     row_ids = [1,2]
         ... )
         """
-        return extractor_r.filterByRowId(covariate_data, row_ids)
+        row_ids_list = IntVector(row_ids)
+        return extractor_r.filterByRowId(covariate_data, row_ids_list)
     
     @staticmethod
     def filter_by_cohort_definition_id(covariate_data: RS4, cohort_id: int):
