@@ -1,13 +1,18 @@
+from __future__ import annotations
 import re
 import rpy2.robjects as ro
 
+from copy import deepcopy
 from typing import Any
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.vectors import ListVector
 from rpy2.robjects.conversion import localconverter
-from pandas import DataFrame, to_datetime, Series
+from pandas import DataFrame, to_datetime
+from rpy2.robjects.packages import importr
 
 pattern = re.compile(r'(?<!^)(?=[A-Z])')
+
+base_r = importr('base')
 
 
 def to_snake_case(name: str) -> str:
@@ -39,7 +44,9 @@ def convert_from_r(item: Any, date_cols: 'list[str]' = None, name: str = '',
     remove_list: bool = True
     if item == ro.vectors.NULL:
         return None
-    elif 'plot' in name and isinstance(item, ro.vectors.ListVector) and reserve_plots:
+    elif ('plot' in name
+          and isinstance(item, ro.vectors.ListVector)
+          and reserve_plots):
         return item
     elif isinstance(item, (ro.environments.Environment,
                            ro.Formula)):
@@ -75,81 +82,55 @@ def convert_from_r(item: Any, date_cols: 'list[str]' = None, name: str = '',
     return result
 
 
-class ListVectorWrapper:
-    """
-    Wrapper class for R ListVector objects
+class ListVectorExtended(ListVector):
 
-    Properties
-    ----------
-    r_obj_in : ListVector
-        The R ListVector object
-
-    Methods
-    -------
-    properties
-        Returns the listed properties of the R object
-
-    mapping
-        Returns the mapping between the R object and the python object
-
-
-    """
-
-    def __init__(self, r_obj_in: ListVector) -> None:
-        # self.__class__ = CovariateSettings
-        self.r_obj = r_obj_in
-        # print(r_obj_in)
-
-        # assign the R properties to the python object, with snake case
-        for name in self.r_keys:
+    def __init__(self):
+        for name in self.names:
             setattr(self, to_snake_case(name),
-                    convert_from_r(self.r_obj.rx2(name)))
+                    convert_from_r(self.rx2(name)))
 
-        self.initialized = True
-
-    @property
-    def keys(self):
-        # check if the r_obj has been set
-        if 'r_obj' not in self.__dict__:
-            return []
-
-        return [to_snake_case(n) for n in self.r_obj.names]
+    @classmethod
+    def from_list_vector(cls, list_vector: ListVector) -> ListVectorExtended:
+        new_list_vector = deepcopy(list_vector)
+        new_list_vector.__class__ = cls
+        new_list_vector.__init__()
+        return new_list_vector
 
     @property
-    def r_keys(self):
-        if 'r_obj' not in self.__dict__:
-            return []
-
-        return self.r_obj.names
+    def keys(self) -> list[str]:
+        return [to_snake_case(n) for n in self.names]
 
     @property
-    def properties(self):
-        if 'initialized' not in self.__dict__:
-            return {}
+    def mapping(self) -> dict:
+        return {to_snake_case(n): n for n in self.names}
 
-        properties = self.__dict__.copy()
-
-        # remove class properties
-        properties.pop('r_obj')
-        properties.pop('initialized')
-
-        return properties
-
-    @property
-    def mapping(self):
-        return {to_snake_case(n): n for n in self.r_obj.names}
+    def as_dict(self) -> dict:
+        return {k: convert_from_r(self.__getattr__(k)) for k in self.keys}
 
     def __setattr__(self, __name: str, __value: Any) -> None:
-
-        if 'initialized' not in self.__dict__:
-            dict.__setattr__(self, __name, __value)
-
-        elif __name in self.keys:
-            r_var = self.mapping[__name]
-            self.r_obj.rx2[r_var] = __value
-            super().__setattr__(__name, __value)
+        if __name in self.keys:
+            self.rx2[self.mapping[__name]] = __value
         else:
             dict.__setattr__(self, __name, __value)
 
-    def __repr__(self) -> str:
-        return Series(self.properties).__repr__()
+    def __getattr__(self, __name: str) -> Any:
+        if __name in self.keys:
+            return convert_from_r(self.rx2[self.mapping[__name]])
+        else:
+            return super().__getattr__(__name)
+
+    def __str__(self):
+        r_class = convert_from_r(base_r.attr(self, 'class'))
+        return f"<ListVectorExtended of R class '{r_class}'>"
+
+    def __repr__(self):
+        lines = [f'{k}: {v}' for k, v in self.as_dict().items()]
+        return '{' + '\n'.join(lines) + '}'
+
+    def _repr_html_(self) -> str:
+        html = '<table>'
+        html += '<tr><th>Attribute</th><th>Value</th><tr>'
+        for key, value in self.as_dict().items():
+            html += f'<tr><td>{key}</td><td>{value}</td></tr>'
+        html += '</html>'
+        return html
