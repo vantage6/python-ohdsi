@@ -97,13 +97,11 @@ def convert_to_r(item: Any) -> Any:
         items = []
         for i in item:
             items.append(convert_to_r(i))
-            print(f'- {items}')
         result = ro.vectors.ListVector.from_iterable(items)
     elif isinstance(item, DataFrame):
         with localconverter(ro.default_converter + pandas2ri.converter):
             result = ro.conversion.py2rpy(item)
     elif isinstance(item, str):
-        print(f'-- {item}')
         result = ro.vectors.StrVector([item])
     elif isinstance(item, float):
         result = ro.vectors.FloatVector([item])
@@ -176,6 +174,7 @@ class ListVectorExtended(ListVector):
             html += f'<tr><td>{key}</td><td>{value}</td></tr>'
         html += '</html>'
         return html
+
 
 class RS4Extended(RS4):
     pass
