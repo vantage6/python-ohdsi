@@ -6,6 +6,7 @@ from rpy2.robjects.methods import RS4
 from rpy2.robjects.vectors import BoolVector, DataFrame, IntVector, ListVector
 from rpy2.robjects.packages import importr
 
+from ohdsi.common import ListVectorExtended
 
 if os.environ.get('IGNORE_R_IMPORTS', False):
     extractor_r = None
@@ -760,7 +761,8 @@ class DefaultCovariateSettings:
         ...     use_condition_occurrence_any_time_prior=True
         ... )
         """
-        return extractor_r.createCovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createCovariateSettings(
             use_demographics_gender,
             use_demographics_age,
             use_demographics_age_group,
@@ -876,7 +878,7 @@ class DefaultCovariateSettings:
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
 
 
 class DefaultTemporalCovariateSettings:
@@ -1101,7 +1103,8 @@ class DefaultTemporalCovariateSettings:
         temporal_start_days_list = list(temporal_start_days)
         temporal_end_days_list = list(temporal_end_days)
 
-        return extractor_r.createTemporalCovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createTemporalCovariateSettings(
             use_demographics_gender,
             use_demographics_age,
             use_demographics_age_group,
@@ -1150,7 +1153,7 @@ class DefaultTemporalCovariateSettings:
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
 
 
 class DefaultTemporalSequenceCovariateSettings:
@@ -1313,7 +1316,8 @@ class DefaultTemporalSequenceCovariateSettings:
         ...     included_covariate_ids = []
         ... )
         """
-        return extractor_r.createTemporalSequenceCovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createTemporalSequenceCovariateSettings(
             use_demographics_gender,
             use_demographics_age,
             use_demographics_age_group,
@@ -1342,7 +1346,7 @@ class DefaultTemporalSequenceCovariateSettings:
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
 
 
 class DetailedCovariateSettings:
@@ -1390,13 +1394,14 @@ class DetailedCovariateSettings:
         ...     included_covariate_ids = [1]
         ... )
         """
-        return extractor_r.createDefaultCovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createDefaultCovariateSettings(
             included_covariate_concept_ids,
             add_descendants_to_include,
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
 
     @staticmethod
     def convert_prespec_settings_to_detailed_settings(
@@ -1430,9 +1435,10 @@ class DetailedCovariateSettings:
         ...     cov_settings
         ... )
         """
-        return extractor_r.convertPrespecSettingsToDetailedSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.convertPrespecSettingsToDetailedSettings(
             covariate_settings
-        )
+        ))
 
     @staticmethod
     def create_analysis_details(
@@ -1498,7 +1504,8 @@ class DetailedCovariateSettings:
         ... )
         """
         parameters_json = json.dumps(parameters)
-        return extractor_r.createAnalysisDetails(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createAnalysisDetails(
             analysis_id,
             sql_file_name,
             parameters_json,
@@ -1507,7 +1514,7 @@ class DetailedCovariateSettings:
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
 
     @staticmethod
     def create_detailed_covariate_settings(analyses: list = []) -> ListVector:
@@ -1548,7 +1555,9 @@ class DetailedCovariateSettings:
         ... )
         >>> cov_settings = DetailedCovariateSettings.create_detailed_covariate_settings(analysis_details)
         """
-        return extractor_r.createDetailedCovariateSettings(analyses)
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createDetailedCovariateSettings(analyses)
+        )
 
     @staticmethod
     def create_default_temporal_covariate_settings(
@@ -1597,13 +1606,14 @@ class DetailedCovariateSettings:
         ...     included_covariate_ids = [1]
         ... )
         """
-        return extractor_r.createDefaultTemporalCovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createDefaultTemporalCovariateSettings(
             included_covariate_concept_ids,
             add_descendants_to_include,
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
 
     @staticmethod
     def create_detailed_temporal_covariate_settings(
@@ -1652,11 +1662,12 @@ class DetailedCovariateSettings:
         temporal_start_days_list = list(temporal_start_days)
         temporal_end_days_list = list(temporal_end_days)
 
-        return extractor_r.createDetailedTemporalCovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createDetailedTemporalCovariateSettings(
             analyses,
             temporal_start_days_list,
             temporal_end_days_list
-        )
+        ))
 
 
 class GetCovariates:
@@ -2146,7 +2157,8 @@ class Table1:
         ...     included_covariate_ids = []
         ... )
         """
-        return extractor_r.createTable1CovariateSettings(
+        return ListVectorExtended.from_list_vector(
+            extractor_r.createTable1CovariateSettings(
             specifications,
             covariate_settings,
             included_covariate_concept_ids,
@@ -2154,4 +2166,4 @@ class Table1:
             excluded_covariate_concept_ids,
             add_descendants_to_exclude,
             included_covariate_ids
-        )
+        ))
