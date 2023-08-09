@@ -53,42 +53,42 @@ class Aggregation:
 
 
 class CompareCohorts:
-        
+
     @staticmethod
     def compute_standardized_difference(
-        covariate_data1: RS4, 
-        covariate_data2: RS4, 
-        cohort_id1: int | None = None, 
+        covariate_data1: RS4,
+        covariate_data2: RS4,
+        cohort_id1: int | None = None,
         cohort_id2: int | None = None
     ) -> DataFrame:
         """
         Compute standardized difference of mean for all covariates.
 
-        Computes the standardized difference for all covariates between two 
-        cohorts. The standardized difference is defined as the difference 
+        Computes the standardized difference for all covariates between two
+        cohorts. The standardized difference is defined as the difference
         between the mean divided by the overall standard deviation.
 
         Parameters
         ----------
         covariate_data1
-            The covariate data of the first cohort. Needs to be in aggregated 
+            The covariate data of the first cohort. Needs to be in aggregated
             format.
         covariate_data2
-            The covariate data of the second cohort. Needs to be in aggregated 
+            The covariate data of the second cohort. Needs to be in aggregated
             format.
-        cohort_id1     
-            If provided, ``covariateData1`` will be restricted to this cohort. 
-            If not provided, ``covariateData1`` is assumed to contain data on 
+        cohort_id1
+            If provided, ``covariateData1`` will be restricted to this cohort.
+            If not provided, ``covariateData1`` is assumed to contain data on
             only 1 cohort.
-        cohort_id2     
-            If provided, ``covariateData2`` will be restricted to this cohort. 
-            If not provided, ``covariateData2`` is assumed to contain data on 
+        cohort_id2
+            If provided, ``covariateData2`` will be restricted to this cohort.
+            If not provided, ``covariateData2`` is assumed to contain data on
             only 1 cohort.
 
         Returns
         -------
         RS4
-            A data frame with means and standard deviations per cohort as well 
+            A data frame with means and standard deviations per cohort as well
             as the standardized difference of mean.
 
         Examples
@@ -104,21 +104,21 @@ class CompareCohorts:
             covariate_data1, covariate_data2,
             cohort_id1, cohort_id2)
 
-    
+
 class CovariateData:
-    
+
     @staticmethod
     def save_covariate_data(covariate_data: RS4, file: str):
         """
         Save the covariate data to folder
 
-        This function saves an object of type ``covariateData``. The data will 
+        This function saves an object of type ``covariateData``. The data will
         be written to a file specified by the user.
 
         Parameters
         ----------
         covariate_data
-            An object of type ``covariateData`` as generated using 
+            An object of type ``covariateData`` as generated using
             ``getDbCovariateData``.
         file
             The name of the file where the data will be written.
@@ -131,25 +131,25 @@ class CovariateData:
         Examples
         --------
         >>> CovariateData.save_covariate_data(
-        ...     covariate_data = covariate_data, 
+        ...     covariate_data = covariate_data,
         ...     file = filename
         ... )
         """
         return extractor_r.saveCovariateData(covariate_data, file)
-    
+
     @staticmethod
     def load_covariate_data(file: str, read_only: bool | None = False):
         """
         Load the covariate data from a folder
 
-        This function loads an object of type covariateData from a folder in 
+        This function loads an object of type covariateData from a folder in
         the file system.
 
         Parameters
         ----------
         file
             The name of the file containing the data.
-        read_only   
+        read_only
             DEPRECATED: If True, the data is opened read only.
 
         Returns
@@ -183,7 +183,7 @@ class CovariateData:
         >>> is_cov_data = CovariateData.is_covariate_data(covariate_data)
         """
         return extractor_r.isCovariateData(x)
-    
+
     @staticmethod
     def is_aggregated_covariate_data(x) -> BoolVector:
         """
@@ -204,7 +204,7 @@ class CovariateData:
         >>> is_aggr_cov_data = CovariateData.is_aggregated_covariate_data(covariate_data)
         """
         return extractor_r.isAggregatedCovariateData(x)
-    
+
     @staticmethod
     def is_temporal_covariate_data(x) -> BoolVector:
         """
@@ -225,11 +225,11 @@ class CovariateData:
         >>> is_temp_cov_data = CovariateData.is_temporal_covariate_data(covariate_data)
         """
         return extractor_r.isTemporalCovariateData(x)
-    
+
     @staticmethod
     def create_empty_covariate_data(
-        cohort_id: int = 1, 
-        aggregated: bool = False, 
+        cohort_id: int = 1,
+        aggregated: bool = False,
         temporal: bool = False
     ) -> RS4:
         """
@@ -237,11 +237,11 @@ class CovariateData:
 
         Parameters
         ----------
-        cohort_id 
+        cohort_id
             cohort number
-        aggregated 
+        aggregated
             if the data should be aggregated
-        temporal 
+        temporal
             if the data is temporal
 
         Returns
@@ -257,12 +257,12 @@ class CovariateData:
         ...     temporal = False
         ... )
         """
-        return extractor_r.createEmptyCovariateData(cohort_id, aggregated, 
+        return extractor_r.createEmptyCovariateData(cohort_id, aggregated,
                                                     temporal)
-    
+
     # @TODO Implement the following:
     # setMethod("show", "CovariateData", function(object)
-    # setMethod("summary", "CovariateData", function(object)      
+    # setMethod("summary", "CovariateData", function(object)
 
 
 class DefaultCovariateSettings:
@@ -1192,95 +1192,95 @@ class DefaultTemporalSequenceCovariateSettings:
         """
         Create covariate settings
 
-        This function creates an object specifying how covariates should be 
+        This function creates an object specifying how covariates should be
         constructed from data in the CDM model.
 
         Parameters
         ----------
-        use_demographics_gender                    
+        use_demographics_gender
             Gender of the subject. (analysis ID 1)
-        use_demographics_age                       
+        use_demographics_age
             Age of the subject on the index date (in years). (analysis ID 2)
-        use_demographics_age_group                  
-            Age of the subject on the index date (in 5 year age groups) 
+        use_demographics_age_group
+            Age of the subject on the index date (in 5 year age groups)
             (analysis ID 3)
-        use_demographics_race                      
+        use_demographics_race
             Race of the subject. (analysis ID 4)
-        use_demographics_ethnicity                 
+        use_demographics_ethnicity
             Ethnicity of the subject. (analysis ID 5)
-        use_demographics_index_year                 
+        use_demographics_index_year
             Year of the index date. (analysis ID 6)
-        use_demographics_index_month                
+        use_demographics_index_month
             Month of the index date. (analysis ID 7)
-        use_condition_occurrence                   
-            One covariate per condition in the condition_occurrence table 
+        use_condition_occurrence
+            One covariate per condition in the condition_occurrence table
             starting in the time window. (analysis ID 101)
-        use_condition_occurrence_primary_inpatient   
-            One covariate per condition observed as a primary diagnosis in an 
-            inpatient setting in the condition_occurrence table starting in the 
+        use_condition_occurrence_primary_inpatient
+            One covariate per condition observed as a primary diagnosis in an
+            inpatient setting in the condition_occurrence table starting in the
             time window. (analysis ID 102)
-        use_condition_era_start                     
-            One covariate per condition in the condition_era table starting in 
+        use_condition_era_start
+            One covariate per condition in the condition_era table starting in
             the time window. (analysis ID 201)
-        use_condition_era_group_start                
-            One covariate per condition era rolled up to SNOMED groups in the 
+        use_condition_era_group_start
+            One covariate per condition era rolled up to SNOMED groups in the
             condition_era table starting in the time window. (analysis ID 203)
-        use_drug_exposure                          
-            One covariate per drug in the drug_exposure table starting in the 
+        use_drug_exposure
+            One covariate per drug in the drug_exposure table starting in the
             time window. (analysis ID 301)
-        use_drug_era_start                          
-            One covariate per drug in the drug_era table starting in the time 
+        use_drug_era_start
+            One covariate per drug in the drug_era table starting in the time
             window. (analysis ID 401)
-        use_drug_era_group_start                     
-            One covariate per drug rolled up to ATC groups in the 
+        use_drug_era_group_start
+            One covariate per drug rolled up to ATC groups in the
             drug_era table starting in the time window. (analysis ID 403)
-        use_procedure_occurrence                   
-            One covariate per procedure in the procedure_occurrence table in 
+        use_procedure_occurrence
+            One covariate per procedure in the procedure_occurrence table in
             the time window. (analysis ID 501)
-        use_device_exposure                        
-            One covariate per device in the device exposure table starting in 
+        use_device_exposure
+            One covariate per device in the device exposure table starting in
             the timewindow. (analysis ID 601)
-        use_measurement                           
-            One covariate per measurement in the measurement table in the time 
+        use_measurement
+            One covariate per measurement in the measurement table in the time
             window. (analysis ID 701)
-        use_measurement_value                      
-            One covariate containing the value per measurement-unit combination 
-            in the time window. If multiple values are found, the last is 
+        use_measurement_value
+            One covariate containing the value per measurement-unit combination
+            in the time window. If multiple values are found, the last is
             taken. (analysis ID 702)
-        use_observation                           
-            One covariate per observation in the observation table in the time 
+        use_observation
+            One covariate per observation in the observation table in the time
             window. (analysis ID 801)
         time_part
             The interval scale ('DAY', 'MONTH', 'YEAR')
         time_interval
-            Fixed interval length for timeId using the 'timePart' scale.  For 
-            example, a 'timePart' of DAY with 'timeInterval' 30 has timeIds 
-            where timeId 1 is day 0 to day 29, timeId 2 is day 30 to day 59, 
+            Fixed interval length for timeId using the 'timePart' scale.  For
+            example, a 'timePart' of DAY with 'timeInterval' 30 has timeIds
+            where timeId 1 is day 0 to day 29, timeId 2 is day 30 to day 59,
             etc.
-        sequence_end_day                           
-            What is the end day (relative to the index date) of the data 
+        sequence_end_day
+            What is the end day (relative to the index date) of the data
             extraction?
-        sequence_start_day                         
-            What is the start day (relative to the index date) of the data 
+        sequence_start_day
+            What is the start day (relative to the index date) of the data
             extraction?
-        included_covariate_concept_ids              
+        included_covariate_concept_ids
             A list of concept IDs that should be used to construct covariates.
-        add_descendants_to_include                  
-            Should descendant concept IDs be added to the list of concepts to 
+        add_descendants_to_include
+            Should descendant concept IDs be added to the list of concepts to
             include?
-        excluded_covariate_concept_ids              
-            A list of concept IDs that should NOT be used to construct 
+        excluded_covariate_concept_ids
+            A list of concept IDs that should NOT be used to construct
             covariates.
-        add_descendants_to_exclude                  
-            Should descendant concept IDs be added to the list of concepts to 
+        add_descendants_to_exclude
+            Should descendant concept IDs be added to the list of concepts to
             exclude?
-        included_covariate_ids                     
+        included_covariate_ids
             A list of covariate IDs that should be restricted to.
 
         Returns
         -------
         ListVector
-            An object of type ``covariateSettings``, to be used in other 
+            An object of type ``covariateSettings``, to be used in other
             functions.
 
         Examples
@@ -1443,7 +1443,7 @@ class DetailedCovariateSettings:
     @staticmethod
     def create_analysis_details(
         analysis_id: int, sql_file_name: str, parameters: dict,
-        included_covariate_concept_ids: list = [], 
+        included_covariate_concept_ids: list = [],
         add_descendants_to_include: bool = False,
         excluded_covariate_concept_ids: list = [],
         add_descendants_to_exclude: bool = False,
@@ -1528,7 +1528,7 @@ class DetailedCovariateSettings:
         Parameters
         ----------
         analyses
-            A list of analysis detail objects as created using 
+            A list of analysis detail objects as created using
             ``createAnalysisDetails``.
 
         Returns
@@ -1658,7 +1658,7 @@ class DetailedCovariateSettings:
         ...     temporal_end_days = range(-365, 0, 1)
         ... )
         """
-        
+
         temporal_start_days_list = list(temporal_start_days)
         temporal_end_days_list = list(temporal_end_days)
 
@@ -1788,7 +1788,7 @@ class GetCovariates:
 
 
 class GetDefaultCovariates:
-    
+
     @staticmethod
     def get_db_default_covariate_data(
         cdm_database_schema: str,
@@ -1808,23 +1808,23 @@ class GetDefaultCovariates:
         """
         Get default covariate information from the database
 
-        Constructs a large default set of covariates for one or more cohorts 
-        using data in the CDM schema. Includes covariates for all drugs, drug 
+        Constructs a large default set of covariates for one or more cohorts
+        using data in the CDM schema. Includes covariates for all drugs, drug
         classes, condition, condition classes, procedures, observations, etc.
 
         Parameters
         ----------
         covariate_settings
-            Either an object of type ``covariateSettings`` as created using one 
+            Either an object of type ``covariateSettings`` as created using one
             of the createCovariate functions, or a list of such objects.
-        target_database_schema (Optional) 
-            The name of the database schema where the resulting covariates 
+        target_database_schema (Optional)
+            The name of the database schema where the resulting covariates
             should be stored.
         target_covariate_table (Optional)
-            The name of the table where the resulting covariates will be 
-            stored. If not provided, results will be fetched to R. The table 
-            can be a permanent table in the ``targetDatabaseSchema`` or a temp 
-            table. If it is a temp table, do not specify 
+            The name of the table where the resulting covariates will be
+            stored. If not provided, results will be fetched to R. The table
+            can be a permanent table in the ``targetDatabaseSchema`` or a temp
+            table. If it is a temp table, do not specify
             ``targetDatabaseSchema``.
         target_covariate_ref_table (Optional)
             The name of the table where the covariate reference will be stored.
@@ -1862,16 +1862,16 @@ class GetDefaultCovariates:
             "oracleTempSchema": oracle_temp_schema,
             "cohortTable": cohort_table,
             "cohortId": cohort_id,
-            "cdmVersion": cdm_version,            
+            "cdmVersion": cdm_version,
             "rowIdField": row_id_field,
             "aggregated": aggregated
         }
-        
+
         # remove None values
         args = {k: v for k, v in args.items() if v is not None}
 
         return extractor_r.getDbDefaultCovariateData(**args)
-    
+
 
 class HelperFunctions:
 
@@ -1901,7 +1901,7 @@ class HelperFunctions:
         """
         row_ids_list = IntVector(row_ids)
         return extractor_r.filterByRowId(covariate_data, row_ids_list)
-    
+
     @staticmethod
     def filter_by_cohort_definition_id(covariate_data: RS4, cohort_id: int):
         """
@@ -1926,9 +1926,9 @@ class HelperFunctions:
         ...     cohort_id = 1
         ... )
         """
-        return extractor_r.filterByCohortDefinitionId(covariate_data, 
+        return extractor_r.filterByCohortDefinitionId(covariate_data,
                                                       cohort_id)
-    
+
 
 class Normalization:
 
@@ -1942,19 +1942,19 @@ class Normalization:
         """
         Tidy covariate data
 
-        Normalize covariate values by dividing by the max and/or remove 
-        redundant covariates and/or remove infrequent covariates. For temporal 
+        Normalize covariate values by dividing by the max and/or remove
+        redundant covariates and/or remove infrequent covariates. For temporal
         covariates, redundancy is evaluated per time ID.
 
         Parameters
         ----------
-        covariate_data   
+        covariate_data
             An object as generated using the ``getDbCovariateData`` function.
-        min_fraction     
-            Minimum fraction of the population that should have a non-zero 
-            alue for a covariate for that covariate to be kept. Set to 0 to 
+        min_fraction
+            Minimum fraction of the population that should have a non-zero
+            alue for a covariate for that covariate to be kept. Set to 0 to
             don't filter on frequency.
-        normalize       
+        normalize
             Normalize the covariates? (dividing by the max).
         remove_redundancy
             Should redundant covariates be removed?
@@ -1975,7 +1975,7 @@ class Normalization:
         """
         return extractor_r.tidyCovariateData(covariate_data, min_fraction,
                                              normalize, remove_redundancy)
-    
+
 
 class Table1:
 
@@ -1984,7 +1984,7 @@ class Table1:
         """
         Get the default table 1 specifications
 
-        Loads the default specifications for a table 1, to be used with the 
+        Loads the default specifications for a table 1, to be used with the
         ``createTable1`` function.
 
         Returns
@@ -2015,8 +2015,8 @@ class Table1:
         """
         Create a table 1
 
-        Creates a formatted table of cohort characteristics, to be included in 
-        publications or reports. Allows for creating a table describing a 
+        Creates a formatted table of cohort characteristics, to be included in
+        publications or reports. Allows for creating a table describing a
         single cohort, or a table comparing two cohorts.
 
         Parameters
@@ -2024,39 +2024,39 @@ class Table1:
         covariate_data1
             The covariate data of the cohort to be included in the table.
         covariate_data2
-            The covariate data of the cohort to also be included, when 
+            The covariate data of the cohort to also be included, when
             comparing two cohorts.
-        cohort_id1     
-            If provided, ``covariateData1`` will be restricted to this cohort. 
-            If not provided, ``covariateData1`` is assumed to contain data on 
+        cohort_id1
+            If provided, ``covariateData1`` will be restricted to this cohort.
+            If not provided, ``covariateData1`` is assumed to contain data on
             only 1 cohort.
-        cohort_id2     
-            If provided, ``covariateData2`` will be restricted to this cohort. 
-            If not provided, ``covariateData2`` is assumed to contain data on 
+        cohort_id2
+            If provided, ``covariateData2`` will be restricted to this cohort.
+            If not provided, ``covariateData2`` is assumed to contain data on
             only 1 cohort.
         specifications
             Specifications of which covariates to display, and how.
-        output        
-            The output format for the table. 
+        output
+            The output format for the table.
             Options are:
             ``output = "two columns"``,
-            ``output = "one column"``, or 
+            ``output = "one column"``, or
             ``output = "list"``
-        sho_counts    
+        sho_counts
             Show the number of cohort entries having the binary covariate?
-        show_percent   
+        show_percent
             Show the percentage of cohort entries having the binary covariate?
-        percent_digits 
+        percent_digits
             Number of digits to be used for percentages.
-        std_diff_digits 
+        std_diff_digits
             Number of digits to be used for the standardized differences.
-        value_digits   
+        value_digits
             Number of digits to be used for the values of continuous variables.
 
         Returns
         -------
         DataFrame
-            A data frame, or, when ``output = "list"`` a list of two data 
+            A data frame, or, when ``output = "list"`` a list of two data
             frames.
 
         Examples
@@ -2094,11 +2094,11 @@ class Table1:
         ... )
         """
         return extractor_r.createTable1(covariate_data1, covariate_data2,
-                                        cohort_id1, cohort_id2, specifications, 
-                                        output, show_counts, show_percent, 
-                                        percent_digits, value_digits, 
+                                        cohort_id1, cohort_id2, specifications,
+                                        output, show_counts, show_percent,
+                                        percent_digits, value_digits,
                                         std_diff_digits)
-    
+
     @staticmethod
     def create_table1_covariate_settings(
         specifications: callable = get_default_table1_specifications(),
@@ -2112,29 +2112,29 @@ class Table1:
         """
         Create covariate settings for a table 1
 
-        Creates a covariate settings object for generating only those 
-        covariates that will be included in a table 1. This function works by 
-        filtering the ``covariateSettings`` object for the covariates in 
+        Creates a covariate settings object for generating only those
+        covariates that will be included in a table 1. This function works by
+        filtering the ``covariateSettings`` object for the covariates in
         ``specifications`` object.
 
         Parameters
         ----------
         specifications
-            A specifications object for generating a table using the 
+            A specifications object for generating a table using the
             ``createTable1`` function.
         covariate_settings
-            The covariate settings object to use as the basis for the filtered 
+            The covariate settings object to use as the basis for the filtered
             covariate settings.
         included_covariate_concept_ids
             A list of concept IDs that should be used to construct covariates.
         add_descendants_to_include
-            Should descendant concept IDs be added to the list of concepts to 
+            Should descendant concept IDs be added to the list of concepts to
             include?
         excluded_covariate_concept_ids
-            A list of concept IDs that should NOT be used to construct 
+            A list of concept IDs that should NOT be used to construct
             covariates.
         add_descendants_to_exclude
-            Should descendant concept IDs be added to the list of concepts to 
+            Should descendant concept IDs be added to the list of concepts to
             exclude?
         included_covariate_ids
             A list of covariate IDs that should be restricted to.
@@ -2142,7 +2142,7 @@ class Table1:
         Returns
         -------
         ListVector
-            A covariate settings object, for example to be used when calling 
+            A covariate settings object, for example to be used when calling
             the ``getDbCovariateData`` function.
 
         Examples
