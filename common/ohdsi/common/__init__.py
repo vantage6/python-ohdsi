@@ -6,6 +6,7 @@ from copy import deepcopy
 from typing import Any
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.vectors import ListVector
+from rpy2.robjects import RS4
 from rpy2.robjects.conversion import localconverter
 from pandas import DataFrame, to_datetime
 from rpy2.robjects.packages import importr
@@ -82,12 +83,50 @@ def convert_from_r(item: Any, date_cols: 'list[str]' = None, name: str = '',
     return result
 
 
-class ListVectorExtended(ListVector):
+def convert_to_r(item: Any) -> Any:
+    result = item
+    if isinstance(item, dict):
+        items = []
+        for k, v in item.items():
+            safe_ = convert_to_r(v)
+            items.append((k, safe_))
+        result = ro.vectors.ListVector(items)
+    elif isinstance(item, tuple):
+        result = ro.vectors.ListVector(item)
+    elif isinstance(item, list):
+        items = []
+        for i in item:
+            items.append(convert_to_r(i))
+            print(f'- {items}')
+        result = ro.vectors.ListVector.from_iterable(items)
+    elif isinstance(item, DataFrame):
+        with localconverter(ro.default_converter + pandas2ri.converter):
+            result = ro.conversion.py2rpy(item)
+    elif isinstance(item, str):
+        print(f'-- {item}')
+        result = ro.vectors.StrVector([item])
+    elif isinstance(item, float):
+        result = ro.vectors.FloatVector([item])
+    elif isinstance(item, bool):
+        result = ro.vectors.BoolVector([item])
+    elif isinstance(item, int):
+        result = ro.vectors.IntVector([item])
+    return result
 
+
+class ListVectorExtended(ListVector):
+    """
+    Extended ListVector class to support the additional features:
+    - Python style snake case attributes
+    - Pythonic setters and getters
+    - as_dict() representation
+    - __repr__ and _repr_html_ methods
+    """
     def __init__(self):
         for name in self.names:
             setattr(self, to_snake_case(name),
                     convert_from_r(self.rx2(name)))
+        self.initialized = True
 
     @classmethod
     def from_list_vector(cls, list_vector: ListVector) -> ListVectorExtended:
@@ -108,8 +147,11 @@ class ListVectorExtended(ListVector):
         return {k: convert_from_r(self.__getattr__(k)) for k in self.keys}
 
     def __setattr__(self, __name: str, __value: Any) -> None:
-        if __name in self.keys:
-            self.rx2[self.mapping[__name]] = __value
+        if __name in self.keys and hasattr(self, 'initialized'):
+            try:
+                self.rx2[self.mapping[__name]] = convert_to_r(__value)
+            except NotImplementedError:
+                pass
         else:
             dict.__setattr__(self, __name, __value)
 
@@ -134,3 +176,6 @@ class ListVectorExtended(ListVector):
             html += f'<tr><td>{key}</td><td>{value}</td></tr>'
         html += '</html>'
         return html
+
+class RS4Extended(RS4):
+    pass
