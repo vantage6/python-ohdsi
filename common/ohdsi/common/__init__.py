@@ -15,7 +15,7 @@ from rpy2.robjects.packages import importr
 pattern = re.compile(r'(?<!^)(?=[A-Z])')
 
 base_r = importr('base')
-
+fe_r = importr("FeatureExtraction")
 
 def to_snake_case(name: str) -> str:
     return pattern.sub('_', name).lower()
@@ -149,10 +149,6 @@ class RS4Extended(RS4):
         self_copy.__class__ = RS4
         return self_copy
 
-    def summary(self):
-        # TODO setMethod(summary) function needs to be triggered first
-        print(base_r.summary(self))
-
     @classmethod
     def from_RS4(cls, rs4: RS4) -> RS4Extended:
         rs4.__class__ = cls
@@ -166,6 +162,10 @@ class RS4Extended(RS4):
 
 
 class CovariateData(RS4Extended):
+
+    def summary(self):
+        fe_r = importr("FeatureExtraction")
+        print(fe_r.summary(self))
 
     @classmethod
     def from_RS4(cls, rs4: RS4) -> CovariateData:
