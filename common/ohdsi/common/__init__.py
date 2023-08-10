@@ -127,6 +127,13 @@ def andromeda_to_df(andromeda_table: RS4) -> pd.DataFrame:
 class RS4Extended(RS4):
 
     @property
+    def attributes(self) -> list[str]:
+        return convert_from_r(base_r.attributes(self))
+
+    def attr(self, attribute: str) -> Any:
+        return convert_from_r(base_r.attr(self, attribute))
+
+    @property
     def r_class(self) -> str:
         return str(self.slots['class'][0])
 
