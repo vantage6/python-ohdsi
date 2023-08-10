@@ -137,6 +137,11 @@ class RS4Extended(RS4):
     def extract(self, property: str) -> Any:
         return base_r.__dict__["$"](self, property)
 
+    def as_RS4(self) -> RS4:
+        self_copy = deepcopy(self)
+        self_copy.__class__ = RS4
+        return self_copy
+
 
 class CovariateData(RS4Extended):
 
@@ -196,6 +201,11 @@ class ListVectorExtended(ListVector):
 
     def as_dict(self) -> dict:
         return {k: convert_from_r(self.__getattr__(k)) for k in self.keys}
+
+    def as_list_vector(self) -> ListVector:
+        self_copy = deepcopy(self)
+        self_copy.__class__ = ListVector
+        return self_copy
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         if __name in self.keys and hasattr(self, 'initialized'):
