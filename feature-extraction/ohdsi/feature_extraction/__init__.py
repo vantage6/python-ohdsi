@@ -268,7 +268,7 @@ def create_empty_covariate_data(cohort_id: int = 1, aggregated: bool = False,
     """
     Creates an empty covariate data object
 
-    Wraps the R ``FeatureExtraction::createEmptyCovariateData`` function
+    Wraps the R ``FeatureExtraction:::createEmptyCovariateData`` function
     defined in ``FeatureExtraction/R/CovariateData.R``.
 
     Parameters
@@ -970,8 +970,8 @@ def create_temporal_covariate_settings(
     use_distinct_observation_count: bool = False,
     use_visit_count: bool = False,
     use_visit_concept_count: bool = False,
-    temporal_start_days: list[int] = list(range(-365, -1, 1)),
-    temporal_end_days: list[int] = list(range(-365, -1, 1)),
+    temporal_start_days: list[int] = list(range(-365, 0, 1)),
+    temporal_end_days: list[int] = list(range(-365, 0, 1)),
     included_covariate_concept_ids: list = [],
     add_descendants_to_include: bool = False,
     excluded_covariate_concept_ids: list = [],
@@ -1146,6 +1146,12 @@ def create_temporal_covariate_settings(
     ...     use_demographics_age = True,
     ... )
     """
+
+    # explicit conversion to an Intvector. Else R will convert the list to
+    # a generic ListVector
+    temporal_start_days = IntVector(temporal_start_days)
+    temporal_end_days = IntVector(temporal_end_days)
+
     return ListVectorExtended.from_list_vector(
         extractor_r.createTemporalCovariateSettings(
             use_demographics_gender,
@@ -1746,6 +1752,11 @@ def create_detailed_temporal_covariate_settings(
     ...     temporal_end_days = range(-365, 0, 1)
     ... )
     """
+
+    # Explicitly convert to IntVector
+    temporal_start_days = IntVector(temporal_start_days)
+    temporal_end_days = IntVector(temporal_end_days)
+
     return ListVectorExtended.from_list_vector(
         extractor_r.createDetailedTemporalCovariateSettings(
             analyses,
