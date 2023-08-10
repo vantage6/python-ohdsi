@@ -142,6 +142,15 @@ class RS4Extended(RS4):
         self_copy.__class__ = RS4
         return self_copy
 
+    def summary(self):
+        print(base_r.summary(self))
+
+    def __str__(self):
+        return f"<RS4Extended of R class '{self.r_class}'>"
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class CovariateData(RS4Extended):
 
@@ -168,6 +177,9 @@ class CovariateData(RS4Extended):
 
         # convert to a pandas dataframe
         return andromeda_to_df(andromeda_table)
+
+    def __str__(self):
+        return f"<CovariateData of R class '{self.r_class}'>"
 
 
 class ListVectorExtended(ListVector):
