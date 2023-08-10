@@ -17,6 +17,7 @@ pattern = re.compile(r'(?<!^)(?=[A-Z])')
 base_r = importr('base')
 fe_r = importr("FeatureExtraction")
 
+
 def to_snake_case(name: str) -> str:
     return pattern.sub('_', name).lower()
 
