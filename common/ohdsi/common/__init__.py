@@ -1,5 +1,6 @@
 from __future__ import annotations
 import re
+import pandas as pd
 import rpy2.robjects as ro
 
 from copy import deepcopy
@@ -8,7 +9,7 @@ from rpy2.robjects import pandas2ri
 from rpy2.robjects.vectors import ListVector
 from rpy2.robjects import RS4
 from rpy2.robjects.conversion import localconverter
-from pandas import DataFrame, to_datetime
+from rpy2.robjects.pandas2ri import rpy2py_dataframe
 from rpy2.robjects.packages import importr
 
 pattern = re.compile(r'(?<!^)(?=[A-Z])')
@@ -21,8 +22,8 @@ def to_snake_case(name: str) -> str:
 
 
 # https://medium.com/appsflyerengineering/running-r-model-in-a-python-environment-7e8971dfe5f9
-def convert_df_dates_from_r(df: DataFrame, date_cols: 'list[str]' = None) \
-        -> DataFrame:
+def convert_df_dates_from_r(df: pd.DataFrame, date_cols: 'list[str]' = None) \
+        -> pd.DataFrame:
     """ convert given date columns into pandas datetime with UTC timezone
 
     Args:
@@ -35,8 +36,10 @@ def convert_df_dates_from_r(df: DataFrame, date_cols: 'list[str]' = None) \
     result = df.copy()
     if date_cols is not None:
         for col in (set(date_cols) & set(result.columns)):
-            result[col] = to_datetime(
+            result[col] = pd.to_datetime(
                 result[col], unit='D', origin='1970-1-1').dt.tz_localize('UTC')
+
+    return result
 
 
 def convert_bool_from_r(bool_vector: ro.vectors.BoolVector) -> bool:
@@ -102,7 +105,7 @@ def convert_to_r(item: Any) -> Any:
         for i in item:
             items.append(convert_to_r(i))
         result = ro.vectors.ListVector.from_iterable(items)
-    elif isinstance(item, DataFrame):
+    elif isinstance(item, pd.DataFrame):
         with localconverter(ro.default_converter + pandas2ri.converter):
             result = ro.conversion.py2rpy(item)
     elif isinstance(item, str):
@@ -114,6 +117,52 @@ def convert_to_r(item: Any) -> Any:
     elif isinstance(item, int):
         result = ro.vectors.IntVector([item])
     return result
+
+
+def andromeda_to_df(andromeda_table: RS4) -> pd.DataFrame:
+    r_df = base_r.data_frame(andromeda_table)
+    return rpy2py_dataframe(r_df)
+
+
+class RS4Extended(RS4):
+
+    @property
+    def r_class(self) -> str:
+        return str(self.slots['class'][0])
+
+    @property
+    def properties(self) -> list[str]:
+        return list(self.names)
+
+    def extract(self, property: str) -> Any:
+        return base_r.__dict__["$"](self, property)
+
+
+class CovariateData(RS4Extended):
+
+    @property
+    def covariates(self) -> pd.DataFrame:
+        # extract the andromeda table from the R object
+        andromeda_table = self.extract("covariates")
+
+        # convert to a pandas dataframe
+        return andromeda_to_df(andromeda_table)
+
+    @property
+    def covariate_ref(self) -> pd.DataFrame:
+        # extract the andromeda table from the R object
+        andromeda_table = self.extract("covariateRef")
+
+        # convert to a pandas dataframe
+        return andromeda_to_df(andromeda_table)
+
+    @property
+    def analysis_ref(self) -> pd.DataFrame:
+        # extract the andromeda table from the R object
+        andromeda_table = self.extract("analysisRef")
+
+        # convert to a pandas dataframe
+        return andromeda_to_df(andromeda_table)
 
 
 class ListVectorExtended(ListVector):
@@ -178,7 +227,3 @@ class ListVectorExtended(ListVector):
             html += f'<tr><td>{key}</td><td>{value}</td></tr>'
         html += '</html>'
         return html
-
-
-class RS4Extended(RS4):
-    pass
