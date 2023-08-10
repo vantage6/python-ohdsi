@@ -10,6 +10,7 @@ from rpy2.robjects.packages import importr
 
 from ohdsi.common import (
     ListVectorExtended,
+    CovariateData,
     convert_bool_from_r
 )
 
@@ -59,7 +60,9 @@ def aggregate_covariates(covariate_data: RS4) -> RS4:
     ... )
     ... aggregated_covariate_data = aggregate_covariates(covariate_data)
     """
-    return extractor_r.aggregateCovariates(covariate_data)
+    return CovariateData.from_RS4(
+        extractor_r.aggregateCovariates(covariate_data)
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -129,7 +132,7 @@ def compute_standardized_difference(
 #    - isTemporalCovariateData (is_temporal_covariate_data)
 #    - createEmptyCovariateData (create_empty_covariate_data)
 # -----------------------------------------------------------------------------
-def save_covariate_data(covariate_data: RS4, file: str):
+def save_covariate_data(covariate_data: RS4, file: str) -> None:
     """
     Save the covariate data to folder
 
@@ -147,20 +150,20 @@ def save_covariate_data(covariate_data: RS4, file: str):
     file : str
         The name of the file where the data will be written.
 
-    Returns
-    -------
-    File
-        A file containing an object of class ``covariateData``.
+    Side Effects
+    ------------
+    A file containing an object of class ``covariateData`` will be written to
+    the file system.
 
     Examples
     --------
     >>> save_covariate_data(covariate_data, file = filename)
     """
-    # TODO: return value is not documented
     return extractor_r.saveCovariateData(covariate_data, file)
 
 
-def load_covariate_data(file: str, read_only: bool | None = False) -> RS4:
+def load_covariate_data(file: str, read_only: bool | None = False) \
+        -> CovariateData:
     """
     Load the covariate data from a folder
 
@@ -179,14 +182,16 @@ def load_covariate_data(file: str, read_only: bool | None = False) -> RS4:
 
     Returns
     -------
-    RS4
+    CovariateData
         An object of class ``CovariateData``.
 
     Examples
     --------
     >>> covariate_data = load_covariate_data(filename)
     """
-    return extractor_r.loadCovariateData(file, read_only)
+    return CovariateData.from_RS4(
+        extractor_r.loadCovariateData(file, read_only)
+    )
 
 
 def is_covariate_data(x: Any) -> bool:
@@ -264,7 +269,7 @@ def is_temporal_covariate_data(x: Any) -> bool:
 
 
 def create_empty_covariate_data(cohort_id: int = 1, aggregated: bool = False,
-                                temporal: bool = False) -> RS4:
+                                temporal: bool = False) -> CovariateData:
     """
     Creates an empty covariate data object
 
@@ -282,23 +287,23 @@ def create_empty_covariate_data(cohort_id: int = 1, aggregated: bool = False,
 
     Returns
     -------
-    RS4
+    CovariateData
         An object of type ``CovariateData``.
 
     Examples
     --------
-    >>> covariate_data = CovariateData.create_empty_covariate_data(
+    >>> covariate_data = create_empty_covariate_data(
     ...     cohort_id = 1,
     ...     aggregated = False,
     ...     temporal = False
     ... )
     """
-    return extractor_r.createEmptyCovariateData(cohort_id, aggregated,
-                                                temporal)
+    return CovariateData.from_RS4(
+        extractor_r.createEmptyCovariateData(cohort_id, aggregated, temporal)
+    )
 
 # TODO Implement the following:
 # setMethod("show", "CovariateData", function(object)
-# setMethod("summary", "CovariateData", function(object)
 
 
 # -----------------------------------------------------------------------------
@@ -1784,7 +1789,7 @@ def get_db_covariate_data(
     cohort_id: int = -1,
     row_id_field: str = "subject_id",
     aggregated: bool = False
-) -> RS4:
+) -> CovariateData:
     """
     Get covariate information from the database
 
@@ -1847,7 +1852,7 @@ def get_db_covariate_data(
 
     Returns
     -------
-    RS4
+    CovariateData
         Returns an object of type ``covariateData``, containing information
         on the covariates.
 
@@ -1886,7 +1891,7 @@ def get_db_covariate_data(
     # remove None values
     args = {k: v for k, v in args.items() if v is not None}
 
-    return extractor_r.getDbCovariateData(**args)
+    return CovariateData.from_RS4(extractor_r.getDbCovariateData(**args))
 
 
 # -----------------------------------------------------------------------------
@@ -1896,7 +1901,7 @@ def get_db_covariate_data(
 # -----------------------------------------------------------------------------
 def get_db_default_covariate_data(
     cdm_database_schema: str,
-    covariate_settings: ListVector | ListVectorExtended,
+    covariate_settings: ListVector | ListVectorExtended | None = None,
     target_database_schema: str | None = None,
     target_covariate_table: str | None = None,
     target_covariate_ref_table: str | None = None,
@@ -1908,7 +1913,7 @@ def get_db_default_covariate_data(
     cdm_version: str = "5",
     row_id_field: str = "subject_id",
     aggregated: bool = False
-) -> RS4:
+) -> CovariateData:
     """
     Get default covariate information from the database
 
@@ -1964,7 +1969,7 @@ def get_db_default_covariate_data(
 
     Returns
     -------
-    RS4
+    CovariateData
         An object of class ``covariateData``.
 
     Examples
@@ -1973,13 +1978,15 @@ def get_db_default_covariate_data(
     ...     connection = connection,
     ...     cdm_database_schema = "main",
     ...     cohort_table = "cohort",
-    ...     covariate_settings = DetailedCovariateSettings.create_default_covariate_settings(),
+    ...     covariate_settings = create_default_covariate_settings(),
     ...     target_database_schema = "main",
     ...     target_covariate_table = "ut_cov",
     ...     target_covariate_ref_table = "ut_cov_ref",
     ...     target_analysis_ref_table = "ut_cov_analysis_ref"
     ... )
     """
+    if covariate_settings is None:
+        covariate_settings = create_default_covariate_settings()
 
     # filter non args
     args = {
@@ -2001,7 +2008,9 @@ def get_db_default_covariate_data(
     # remove None values
     args = {k: v for k, v in args.items() if v is not None}
 
-    return extractor_r.getDbDefaultCovariateData(**args)
+    return CovariateData.from_RS4(
+        extractor_r.getDbDefaultCovariateData(**args)
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -2010,7 +2019,8 @@ def get_db_default_covariate_data(
 #    - filterByRowId (filter_by_row_id)
 #    - filterByCohortDefinitionId (filter_by_cohort_definition_id)
 # -----------------------------------------------------------------------------
-def filter_by_row_id(covariate_data: RS4, row_ids: list[int]) -> RS4:
+def filter_by_row_id(covariate_data: RS4 | CovariateData, row_ids: list[int]) \
+        -> CovariateData:
     """
     Filter covariates by row ID
 
@@ -2019,14 +2029,14 @@ def filter_by_row_id(covariate_data: RS4, row_ids: list[int]) -> RS4:
 
     Parameters
     ----------
-    covariate_data : RS4
+    covariate_data : RS4 | CovariateData
         An object of type ``CovariateData``.
     row_ids : list[int]
         A vector containing the row_ids to keep.
 
     Returns
     -------
-    RS4
+    CovariateData
         An object of type ``CovariateData``.
 
     Examples
@@ -2037,10 +2047,13 @@ def filter_by_row_id(covariate_data: RS4, row_ids: list[int]) -> RS4:
     ... )
     """
     row_ids_list = IntVector(row_ids)
-    return extractor_r.filterByRowId(covariate_data, row_ids_list)
+    return CovariateData.from_RS4(
+        extractor_r.filterByRowId(covariate_data, row_ids_list)
+    )
 
 
-def filter_by_cohort_definition_id(covariate_data: RS4, cohort_id: int) -> RS4:
+def filter_by_cohort_definition_id(covariate_data: RS4 | CovariateData,
+                                   cohort_id: int) -> CovariateData:
     """
     Filter covariates by cohort definition ID
 
@@ -2049,25 +2062,26 @@ def filter_by_cohort_definition_id(covariate_data: RS4, cohort_id: int) -> RS4:
 
     Parameters
     ----------
-    covariate_data : RS4
+    covariate_data : RS4 | CovariateData
         An object of type ``CovariateData``.
     cohort_id : int
         The cohort definition ID to keep.
 
     Returns
     -------
-    RS4
+    CovariateData
         An object of type ``CovariateData``.
 
     Examples
     --------
-    >>> covariate_data <- filter_by_cohort_definition_id(
+    >>> covariate_data = filter_by_cohort_definition_id(
     ...     covariate_data = covariate_data,
     ...     cohort_id = 1
     ... )
     """
-    return extractor_r.filterByCohortDefinitionId(covariate_data,
-                                                  cohort_id)
+    return CovariateData.from_RS4(
+        extractor_r.filterByCohortDefinitionId(covariate_data, cohort_id)
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -2075,9 +2089,9 @@ def filter_by_cohort_definition_id(covariate_data: RS4, cohort_id: int) -> RS4:
 # functions:
 #    - tidyCovariateData (tidy_covariate_data)
 # -----------------------------------------------------------------------------
-def tidy_covariate_data(covariate_data: RS4, min_fraction: float = 0.001,
-                        normalize: bool = True, remove_redundancy: bool = True
-                        ) -> RS4:
+def tidy_covariate_data(covariate_data: RS4 | CovariateData,
+                        min_fraction: float = 0.001, normalize: bool = True,
+                        remove_redundancy: bool = True) -> CovariateData:
     """
     Tidy covariate data
 
@@ -2090,7 +2104,7 @@ def tidy_covariate_data(covariate_data: RS4, min_fraction: float = 0.001,
 
     Parameters
     ----------
-    covariate_data : RS4
+    covariate_data : RS4 | CovariateData
         An object as generated using the ``getDbCovariateData`` function.
     min_fraction : float
         Minimum fraction of the population that should have a non-zero
@@ -2103,7 +2117,7 @@ def tidy_covariate_data(covariate_data: RS4, min_fraction: float = 0.001,
 
     Returns
     -------
-    RS4
+    CovariateData
         An object of class ``covariateData``.
 
     Examples
@@ -2115,8 +2129,11 @@ def tidy_covariate_data(covariate_data: RS4, min_fraction: float = 0.001,
     ...     removeRedundancy = True
     ... )
     """
-    return extractor_r.tidyCovariateData(covariate_data, min_fraction,
-                                         normalize, remove_redundancy)
+    return CovariateData.from_RS4(
+        extractor_r.tidyCovariateData(
+            covariate_data, min_fraction, normalize, remove_redundancy
+        )
+    )
 
 
 # -----------------------------------------------------------------------------
