@@ -39,6 +39,10 @@ def convert_df_dates_from_r(df: DataFrame, date_cols: 'list[str]' = None) \
                 result[col], unit='D', origin='1970-1-1').dt.tz_localize('UTC')
 
 
+def convert_bool_from_r(bool_vector: ro.vectors.BoolVector) -> bool:
+    return tuple(bool_vector)[0]
+
+
 def convert_from_r(item: Any, date_cols: 'list[str]' = None, name: str = '',
                    reserve_plots: bool = True) -> Any:
     result = item
