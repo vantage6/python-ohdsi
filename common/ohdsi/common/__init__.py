@@ -164,7 +164,11 @@ class CovariateData(RS4Extended):
     def from_RS4(cls, rs4: RS4) -> CovariateData:
         rs4.__class__ = cls
         for prop in rs4.properties:
-            setattr(rs4, prop, andromeda_to_df(rs4.extract(prop)))
+            setattr(
+                rs4,
+                to_snake_case(prop),
+                andromeda_to_df(rs4.extract(prop))
+            )
         return rs4
 
     def __str__(self):
