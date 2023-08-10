@@ -143,7 +143,13 @@ class RS4Extended(RS4):
         return self_copy
 
     def summary(self):
+        # TODO setMethod(summary) function needs to be triggered first
         print(base_r.summary(self))
+
+    @classmethod
+    def from_RS4(cls, rs4: RS4) -> RS4Extended:
+        rs4.__class__ = cls
+        return rs4
 
     def __str__(self):
         return f"<RS4Extended of R class '{self.r_class}'>"
@@ -154,29 +160,12 @@ class RS4Extended(RS4):
 
 class CovariateData(RS4Extended):
 
-    @property
-    def covariates(self) -> pd.DataFrame:
-        # extract the andromeda table from the R object
-        andromeda_table = self.extract("covariates")
-
-        # convert to a pandas dataframe
-        return andromeda_to_df(andromeda_table)
-
-    @property
-    def covariate_ref(self) -> pd.DataFrame:
-        # extract the andromeda table from the R object
-        andromeda_table = self.extract("covariateRef")
-
-        # convert to a pandas dataframe
-        return andromeda_to_df(andromeda_table)
-
-    @property
-    def analysis_ref(self) -> pd.DataFrame:
-        # extract the andromeda table from the R object
-        andromeda_table = self.extract("analysisRef")
-
-        # convert to a pandas dataframe
-        return andromeda_to_df(andromeda_table)
+    @classmethod
+    def from_RS4(cls, rs4: RS4) -> CovariateData:
+        rs4.__class__ = cls
+        for prop in rs4.properties:
+            setattr(rs4, prop, andromeda_to_df(rs4.extract(prop)))
+        return rs4
 
     def __str__(self):
         return f"<CovariateData of R class '{self.r_class}'>"
