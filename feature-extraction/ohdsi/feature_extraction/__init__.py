@@ -125,8 +125,8 @@ def compute_standardized_difference(
 #    - saveCovariateData (save_covariate_data)
 #    - loadCovariateData (load_covariate_data)
 #    - isCovariateData (is_covariate_data)
-#    - is_aggregated_covariate_data (is_aggregated_covariate_data)
-#    - is_temporal_covariate_data (is_temporal_covariate_data)
+#    - isAggregatedCovariateData (is_aggregated_covariate_data)
+#    - isTemporalCovariateData (is_temporal_covariate_data)
 #    - createEmptyCovariateData (create_empty_covariate_data)
 # -----------------------------------------------------------------------------
 def save_covariate_data(covariate_data: RS4, file: str):
