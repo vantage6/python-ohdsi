@@ -78,7 +78,7 @@ def create_connection_details(
 
     Examples
     --------
-    >>> Connect.create_connection_details(
+    >>> create_connection_details(
     ...     dbms="postgresql", user="user", password="password",
     ...     server="localhost/postgres", port=5432
     ... )
@@ -157,7 +157,7 @@ def connect(connection_details: ListVector | None = None,
 
     Examples
     --------
-    >>> Connect.connect(connection_details)
+    >>> connect(connection_details)
     """
     # The jar required is shipped with the package
     if not path_to_driver:
@@ -195,7 +195,7 @@ def disconnect(connection: RS4) -> None:
 
     Examples
     --------
-    >>> Connect.disconnect(connection)
+    >>> disconnect(connection)
     """
     database_connector_r.disconnect(connection)
 
@@ -227,8 +227,8 @@ def query_sql(connection: RS4, sql: str) -> RS4:
 
     Examples
     --------
-    >>> Sql.query_sql(connection, sql)
-    >>> Sql.query_sql(connection, "SELECT COUNT(*) FROM person")
+    >>> query_sql(connection, sql)
+    >>> query_sql(connection, "SELECT COUNT(*) FROM person")
     """
     return database_connector_r.querySql(connection, sql)
 
@@ -249,9 +249,9 @@ def execute_sql(connection: RS4, sql: str) -> None:
 
     Examples
     --------
-    >>> Sql.execute_sql(connection, sql)
-    >>> Sql.execute_sql(connection, "DROP TABLE IF EXISTS person")
-    >>> Sql.execute_sql(
+    >>> execute_sql(connection, sql)
+    >>> execute_sql(connection, "DROP TABLE IF EXISTS person")
+    >>> execute_sql(
     ...     conn, "CREATE TABLE x (k INT); CREATE TABLE y (k INT);"
     ... )
     """
