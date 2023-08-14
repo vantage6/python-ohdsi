@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 import re
 import pandas as pd
 import rpy2.robjects as ro
@@ -14,8 +15,12 @@ from rpy2.robjects.packages import importr
 
 pattern = re.compile(r'(?<!^)(?=[A-Z])')
 
-base_r = importr('base')
-fe_r = importr("FeatureExtraction")
+if os.environ.get('IGNORE_R_IMPORTS', False):
+    base_r = None
+    fe_r = None
+else:
+    base_r = importr('base')
+    fe_r = importr("FeatureExtraction")
 
 
 def to_snake_case(name: str) -> str:

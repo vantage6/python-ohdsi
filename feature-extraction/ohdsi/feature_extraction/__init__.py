@@ -14,6 +14,7 @@ from ohdsi.common import (
     convert_bool_from_r
 )
 
+
 if os.environ.get('IGNORE_R_IMPORTS', False):
     extractor_r = None
 else:
