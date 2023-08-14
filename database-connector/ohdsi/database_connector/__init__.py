@@ -96,7 +96,16 @@ class Connect:
         return database_connector_r.createConnectionDetails(**input_args)
 
     @staticmethod
-    def connect(connection_details: ListVector) -> RS4:
+    def connect(connection_details: ListVector | None = None,
+                dbms: str | None = None,
+                user: str | None = None,
+                password: str | None = None,
+                server: str | None = None,
+                port: int | None = None,
+                extra_settings: str | None = None,
+                oracle_driver: str = "thin",
+                connection_string: str | None = None,
+                path_to_driver: str | None = None) -> RS4:
         """
         Connect to a OMOP CDM database.
 
@@ -107,6 +116,29 @@ class Connect:
         ----------
         connection_details : ListVector
             The connection details.
+        dbms : str | None, optional
+            The DBMS type.
+        user : str | None, optional
+            The database user name. Required if ``connection_string`` is not
+            provided.
+        password : str | None, optional
+            The database password. Required if ``connection_string`` is not
+            provided.
+        server : str | None, optional
+            The database server name. Required if ``connection_string`` is not
+            provided.
+        port : int | None, optional
+            The database server port. Required if ``connection_string`` is not
+            provided.
+        extra_settings : str | None, optional
+            Additional database connection settings.
+        oracle_driver : str, optional
+            The Oracle driver to use. Defaults to ``thin``.
+        connection_string : str | None, optional
+            The database connection string. ``user``, ``password``, ``server``,
+            and ``port`` are ignored if this is provided.
+        path_to_driver : str | None, optional
+            The path to the database driver jar file.
 
         Returns
         -------
@@ -117,7 +149,26 @@ class Connect:
         --------
         >>> Connect.connect(connection_details)
         """
-        return database_connector_r.connect(connection_details)
+        # The jar required is shipped with the package
+        if not path_to_driver:
+            jar = files('ohdsi.database_connector.java')
+            # Hack to get the path to the folder of driver jar file,
+            # as the files method returns a MultiPlexPath object which
+            # does not allow simple conversion to string.
+            path_to_driver = str(jar.joinpath(''))
+
+        input_args = { "connectionDetails": connection_details,
+            "dbms": dbms, "user": user, "password": password,
+            "server": server, "port": port, "extraSettings": extra_settings,
+            "oracleDriver": oracle_driver,
+            "connectionString": connection_string,
+            "pathToDriver": path_to_driver
+        }
+        # Remove None values
+        input_args = {k: v for k, v in input_args.items() if v is not None}
+
+        return database_connector_r.connect(**input_args)
+
 
     @staticmethod
     def disconnect(connection: RS4) -> None:
