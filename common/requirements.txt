@@ -1,2 +1,2 @@
-pandas
-rpy2
+pandas==2.0.3
+rpy2==3.5.12
