@@ -1,3 +1,4 @@
+-r ../common/requirements.txt
 -r ../database-connector/requirements.txt
 -r ../cohort-generator/requirements.txt
 -r ../circe/requirements.txt
