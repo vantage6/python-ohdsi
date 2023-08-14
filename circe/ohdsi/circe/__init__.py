@@ -234,7 +234,7 @@ def cohort_print_friendly(expression: RS4 | dict | str) -> StrVector:
     """
     if isinstance(expression, dict):
         expression = json.dumps(expression)
-    return circe_r.cohortPrintFriendly(expression)
+    return circe_r.cohortPrintFriendly(expression)[0]
 
 
 def concept_set_print_friendly(concept_set: str | dict) -> StrVector:
@@ -257,7 +257,7 @@ def concept_set_print_friendly(concept_set: str | dict) -> StrVector:
     """
     if isinstance(concept_set, dict):
         concept_set = json.dumps(concept_set)
-    return circe_r.conceptSetPrintFriendly(concept_set)
+    return circe_r.conceptSetPrintFriendly(concept_set)[0]
 
 
 def concept_set_list_print_friendly(concept_set_list: str | dict) \
@@ -284,4 +284,4 @@ def concept_set_list_print_friendly(concept_set_list: str | dict) \
     """
     if isinstance(concept_set_list, dict):
         concept_set_list = json.dumps(concept_set_list)
-    return circe_r.conceptSetListPrintFriendly(concept_set_list)
+    return circe_r.conceptSetListPrintFriendly(concept_set_list)[0]
