@@ -17,7 +17,7 @@ with open(parent_dir / 'VERSION') as f:
 
 # setup the package
 setup(
-    name='cohort-generator',
+    name='ohdsi-cohort-generator',
     version=version,
     description='Python wrapper for the OHDSI R packages',
     long_description=long_description,
