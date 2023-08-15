@@ -74,7 +74,11 @@
     }
   ],
   "PrimaryCriteria": {
-    "CriteriaList": [],
+    "CriteriaList": [
+      {
+        "Death": {}
+      }
+    ],
     "ObservationWindow": {
       "PriorDays": 0,
       "PostDays": 0
@@ -89,17 +93,7 @@
   "ExpressionLimit": {
     "Type": "First"
   },
-  "InclusionRules": [
-    {
-      "name": "death",
-      "expression": {
-        "Type": "ALL",
-        "CriteriaList": [],
-        "DemographicCriteriaList": [],
-        "Groups": []
-      }
-    }
-  ],
+  "InclusionRules": [],
   "CensoringCriteria": [],
   "CollapseSettings": {
     "CollapseType": "ERA",
