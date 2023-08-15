@@ -1,10 +1,11 @@
 import os
 
 from pathlib import Path
-from rpy2.robjects.methods import RS4
-from rpy2.robjects.vectors import StrVector
 
+from rpy2.robjects.vectors import StrVector
 from rpy2.robjects.packages import importr
+from rpy2.robjects.pandas2ri import rpy2py_dataframe
+from pandas import DataFrame
 
 #
 # converters
@@ -423,7 +424,7 @@ def load_render_translate_sql(
     )
 
 
-def list_supported_dialects() -> RS4:
+def list_supported_dialects() -> DataFrame:
     """
     List the supported dialects
 
@@ -432,9 +433,7 @@ def list_supported_dialects() -> RS4:
 
     Returns
     -------
-    RS4
-        A R wrapped dataframe
-
-    TODO : make this a pandas dataframe
+    DataFrame
+        A dataframe with the supported dialects
     """
-    return sql_render_r.listSupportedDialects()
+    return rpy2py_dataframe(sql_render_r.listSupportedDialects())
