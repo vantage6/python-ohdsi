@@ -91,10 +91,16 @@ def render(sql: str, warn_on_missing_parameters: bool = True, **kwargs) \
     kwargs : dict
         The parameter values.
 
-    Returns
-    -------
-    StrVector
-        The rendered SQL.
+        Parameters
+        ----------
+        sql : str
+             The parameterized SQL.
+        warn_on_missing_parameters : bool
+            Should a warning be raised when parameters provided to this
+            function do not appear in the parameterized SQL that is being
+            rendered? By default, this is True
+        kwargs : dict
+            The parameter values.
 
     Examples
     --------
