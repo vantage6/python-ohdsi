@@ -243,7 +243,7 @@ def get_temp_table_prefix() -> StrVector:
 
     Examples
     --------
-    >>> RenderSql.get_temp_table_prefix()
+    >>> get_temp_table_prefix()
     """
     return sql_render_r.getTempTablePrefix()
 
