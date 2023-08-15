@@ -4,7 +4,6 @@ from flask import Flask
 from flask_restful import Api
 from celery import Celery
 
-from .model import db
 from .resource import FeatureExtraction, FeatureExtractionJob
 
 broker_url = os.environ["CELERY_BROKER_URL"] or \
@@ -20,10 +19,6 @@ app.config["CELERY"] = dict(
     result_backend=backend_url,
     task_ignore_result=True,
 )
-
-db.init_app(app)
-with app.app_context():
-    db.create_all()
 
 api = Api(app)
 
