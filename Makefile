@@ -7,6 +7,11 @@ PACKAGES = \
 	feature-extraction \
 	common
 
+IMAGE = "harbor2.vantage6.ai/infrastructure/ohdsi-api"
+TAG = "latest"
+IMAGE_OPTS = "--progress=plain"
+
+
 help:
 	@echo "install       - install all packages"
 	@echo "install-dev   - install all packages in editable mode"
@@ -14,6 +19,8 @@ help:
 	@echo "publish       - publish all packages to pypi, needs USERNAME and"
 	@echo "                PASSWORD"
 	@echo "set-version   - set the version of all packages, needs VERSION"
+	@echo "image         - build the docker image"
+	@echo "push          - push the docker image to the registry"
 
 set-version:
 	echo $(VERSION) > VERSION;
@@ -38,4 +45,12 @@ publish:
 		cd $(package) && twine upload --repository pypi dist/* \
 		-u $(USERNAME) -p $(PASSWORD) --disable-progress-bar && cd ..; \
 	)
+
+image:
+	docker build -t $(IMAGE):$(TAG) $(IMAGE_OPTS) ./api
+
+push:
+	docker push $(IMAGE):$(TAG)
+
+
 

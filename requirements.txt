@@ -2,5 +2,6 @@ gunicorn==21.2.0
 flask-restful
 Flask-SQLAlchemy
 celery
+watchdog[watchmedo]
 ohdsi-database-connector
 ohdsi-feature-extraction

@@ -39,6 +39,6 @@ ENV LD_LIBRARY_PATH=/usr/lib/jvm/java-17-openjdk-amd64/lib/server/
 RUN pip install psycopg2-binary
 # start the flask app
 # CMD uwsgi --http 0.0.0.0:${PORT} --master -p 4 -w run:app
-CMD gunicorn -b 0.0.0.0 -w 1 'run:app'
+CMD gunicorn -b 0.0.0.0 -w 1 'api.src:app'
 
 # /usr/local/lib/python3.11/site-packages/ohdsi/database_connector

@@ -1,5 +1,5 @@
 import logging
-from src import app
+from .src import app
 # import os
 
 # from flask import Flask

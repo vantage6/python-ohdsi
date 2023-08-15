@@ -3,14 +3,15 @@ services:
   # OHDSI API
   ohdsi-api:
     build: .
-    image: ohdsi-api
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
     ports:
-      - 5000:5000
+      - 5000:8000
+    volumes:
+      - .:/app
     container_name: ohdsi-api
     env_file:
       - .env
-    # TODO env for connection to the OMOP DB
-    command: ["python", "run.py"]
+    command: ["gunicorn", "-b", "0.0.0.0", "-w", "1", "api.src:app"]
 
   # RabbitMQ
   rabbitmq:
@@ -35,9 +36,9 @@ services:
 
   celery-worker:
     build: .
-    image: ohdsi-api
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
     container_name: celery-worker
-    command: celery -A src.celery_app worker --loglevel=info
+    command: ["celery", "-A", "api.src.celery_app", "worker"]
     env_file:
       - .env
     volumes:
