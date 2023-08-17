@@ -58,6 +58,13 @@ def cohort_expression_from_json(expression_json: str | dict) -> RS4:
     -------
     RS4
         A wrapped cohort expression R object
+
+    Examples
+    --------
+    >>> from importlib.resources import files
+    >>> cohort_str = files('ohdsi.circe.data').joinpath('simpleCohort.json')
+    ...    .read_text()
+    >>> cohort = CohortExpression.cohort_expression_from_json(cohort_str)
     """
     if isinstance(expression_json, dict):
         expression_json = json.dumps(expression_json)
@@ -108,6 +115,19 @@ def create_generate_options(
     -------
     RS4
         A wrapped generation options R object
+
+    Examples
+    --------
+    >>> options = create_generate_options()
+    >>> options = create_generate_options(
+    ...     cohort_id_field_name='cohort_definition_id',
+    ...     cohort_id=1,
+    ...     cdm_schema='cdm',
+    ...     target_table='cohort',
+    ...     result_schema='results',
+    ...     vocabulary_schema='cdm',
+    ...     generate_stats=True
+    ... )
     """
     kwargs = {
         'cohortIdFieldName': cohort_id_field_name, 'cohortId': cohort_id,

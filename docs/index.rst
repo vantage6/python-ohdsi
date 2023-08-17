@@ -1,23 +1,23 @@
-Introduction
-============
+Getting started
+===============
 
 .. warning::
 
     Please note that this python package is not endorsed or affiliated with
-    the official ohdsi community. It is a project intended for enabling
+    the official OHDSI community. It is a project intended for enabling
     `vantage6 <https://vantage6.ai>`_ to connect to an OMOP CDM database.
 
 This package includes python wrappers for the following
 `OHDSI libraries <https://github.com/OHDSI>`_:
 
 * `CirceR <https://github.com/OHDSI/CirceR>`_
+* `SqlRender <https://github.com/OHDSI/SqlRender>`_
 * `Cohort Generator <https://github.com/OHDSI/CohortGenerator>`_
 * `Database Connector <https://github.com/OHDSI/DatabaseConnector>`_
 * `Feature Extraction <https://github.com/OHDSI/FeatureExtraction>`_
 
-This package also contains a small RestAPI to interact with the Feature
-Extraction module. You can use these packages to interact with an OMOP source
-from Python or you use the API to retrieve record level data.
+This packages contains, besides the python interfaces for the OHDSI libraries,
+a small `RestAPI <api>`_ to interact with the libraries.
 
 There are three use-cases to use this package:
 
@@ -35,18 +35,18 @@ a simple query:
 
 .. code:: python
 
-    from ohdsi.database_connector import Connect, Sql
+    from ohdsi import database_connector
 
-    connection_details = Connect.create_connection_details(
+    connection_details = database_connector.create_connection_details(
         "postgresql",
         server="localhost/postgres",
         user="postgres",
         password="some-password",
         port=5432
     )
-    con = Connect.connect(connection_details)
+    con = database_connector.connect(connection_details)
 
-    Sql.execute_sql(con, "SELECT * FROM omopcdm.person LIMIT 3")
+    database_connector.execute_sql(con, "SELECT * FROM omopcdm.person LIMIT 3")
 
 
 Case 2: vantage6 SQL interface
@@ -96,7 +96,7 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
     folder python_ohdsi as API {
         interface RestAPI
         rectangle DatabaseConnector
-        rectangle FeatureExtraction
+        rectangle OHDSILibrary AS "OHDSI Library"
     }
 
     card vantage6_node as v6 {
@@ -108,8 +108,8 @@ to the IP/hostname and port of the machine that hosts the RestAPI.
 
     node -> whitelisting
     whitelisting -> RestAPI : HTTP
-    RestAPI -> FeatureExtraction : HTTP
-    FeatureExtraction --> DatabaseConnector
+    RestAPI -> OHDSILibrary : HTTP
+    OHDSILibrary --> DatabaseConnector
     OMOP <- DatabaseConnector  : SQL
     @enduml
 
@@ -118,12 +118,27 @@ Table of Contents
 =================
 
 .. toctree::
-   :numbered: 2
-   :maxdepth: 3
+   :maxdepth: 2
 
    self
-   libraries/index
-   api/index
+   changelog
+
+.. toctree::
+   :maxdepth: 3
+   :caption: OHDSI Python
+
+   libraries/circe
+   libraries/sql_render
+   libraries/cohort_generator
+   libraries/database_connector
+   libraries/feature_extraction
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Development
+
+   api
+   contributing
 
 
 Indices and tables

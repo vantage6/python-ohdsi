@@ -117,7 +117,6 @@ def compute_standardized_difference(
     ...     cohort_id2 = 2
     ... )
     """
-    # TODO: check that the return type is correct
     return extractor_r.computeStandardizedDifference(
         covariate_data1, covariate_data2,
         cohort_id1, cohort_id2)
@@ -302,9 +301,6 @@ def create_empty_covariate_data(cohort_id: int = 1, aggregated: bool = False,
     return CovariateData.from_RS4(
         extractor_r.createEmptyCovariateData(cohort_id, aggregated, temporal)
     )
-
-# TODO Implement the following:
-# setMethod("show", "CovariateData", function(object)
 
 
 # -----------------------------------------------------------------------------

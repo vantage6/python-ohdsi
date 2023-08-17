@@ -14,7 +14,6 @@ from pandas import DataFrame
 # def _py_none_to_null(py_obj):
 #     return robjects.null
 
-
 #
 # r interface
 #
