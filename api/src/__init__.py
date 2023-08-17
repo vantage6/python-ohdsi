@@ -1,4 +1,5 @@
 import os
+import time
 
 from flask import Flask
 from flask_restful import Api
@@ -12,7 +13,6 @@ backend_url = os.environ["CELERY_RESULT_BACKEND"] or \
     "db+sqlite:///results.sqlite"
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project1.db"
 
 app.config["CELERY"] = dict(
     broker=broker_url,

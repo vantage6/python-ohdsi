@@ -31,6 +31,7 @@ COPY . /app
 WORKDIR /app
 
 RUN pip install -r requirements.txt
+RUN make install-dev
 # port where the API is liste
 EXPOSE ${PORT}
 

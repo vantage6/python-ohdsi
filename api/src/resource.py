@@ -37,7 +37,8 @@ class FeatureExtractionJob(Resource):
             "id": job_id,
             "state": result.state,
             "value": result.result if result.ready() else None,
-            "worker_available": is_worker_awake(result.app)
+            "worker_available": is_worker_awake(result.app),
+            "info": result.info,
         })
 
 
