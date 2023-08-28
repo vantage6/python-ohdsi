@@ -311,3 +311,70 @@ def get_cohort_counts(
     # remove None values
     args = {k: v for k, v in args.items() if v is not None}
     return cohort_generator.getCohortCounts(**args)
+
+
+# -----------------------------------------------------------------------------
+# wrapper: CohortGenerator/R/Export.R
+# functions:
+#    - export_cohort_stats_tables  (exportCohortStatsTables )
+# -----------------------------------------------------------------------------
+def export_cohort_stats_tables(
+    cohort_database_schema: str,
+    cohort_statistics_folder: str,
+    connection_details: ListVector | None = None,
+    connection: RS4 | None = None,
+    cohort_table_names: ListVector | None = None,
+    snake_case_to_camel_case: bool = True,
+    file_names_in_snake_case: bool = False,
+    incremental: bool = False,
+    database_id: str | None = None
+):
+    """
+    Export the cohort statistics tables to the file system
+
+    This function retrieves the data from the cohort statistics tables and 
+    writes them to the inclusion statistics folder specified in the function
+    call.
+
+    Parameters
+    ----------
+    cohort_database_schema : str
+        The schema to create the cohort tables in
+    cohort_statistics_folder : str
+        The path to the folder where the cohort statistics folder where the 
+        results will be written
+    connection_details : ListVector, optional
+        The connection details, by default None
+    connection : RS4, optional
+        The connection, by default None
+    cohort_table_names : ListVector, optional
+        The names of the cohort tables, by default None
+    snake_case_to_camel_case : bool, optional
+        Should column names in the exported files convert from snake_case to 
+        camelCase? Default is FALSE
+    file_names_in_snake_case : bool, optional
+        Should the exported files use snake_case? Default is FALSE
+    incremental : bool, optional
+        A boolean representing if the tables should be created
+        incrementally, by default False
+    database_id : str, optional
+        When specified, the databaseId will be added to the exported results
+    """
+    
+    if cohort_table_names is None:
+        cohort_table_names = get_cohort_table_names()
+
+    args = {
+        "cohortDatabaseSchema": cohort_database_schema,
+        "cohortStatisticsFolder": cohort_statistics_folder,
+        "connectionDetails": connection_details,
+        "connection": connection,
+        "cohortTableNames": cohort_table_names,
+        "snakeCaseToCamelCase": snake_case_to_camel_case,
+        "fileNamesInSnakeCase": file_names_in_snake_case,
+        "incremental": incremental,
+        "databaseId": database_id
+    }
+    # remove None values
+    args = {k: v for k, v in args.items() if v is not None}
+    return cohort_generator.exportCohortStatsTables(**args)
