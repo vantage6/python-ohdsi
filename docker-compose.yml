@@ -38,7 +38,7 @@ services:
     build: .
     image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
     container_name: celery-worker
-    command: ["celery", "-A", "api.src.celery_app", "worker"]
+    command: celery -A api.src.celery_app worker -l DEBUG -P solo
     env_file:
       - .env
     volumes:
