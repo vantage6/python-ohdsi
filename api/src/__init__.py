@@ -20,6 +20,7 @@ app.config["CELERY"] = dict(
     task_ignore_result=True,
 )
 
+
 api = Api(app)
 
 api.add_resource(FeatureExtraction, "/feature-extraction")

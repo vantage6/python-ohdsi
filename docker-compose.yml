@@ -10,7 +10,7 @@ services:
       - .:/app
     container_name: ohdsi-api
     env_file:
-      - .env
+      - .celery-worker.env
     command: ["gunicorn", "-b", "0.0.0.0", "-w", "1", "api.src:app"]
 
   # RabbitMQ
@@ -40,7 +40,7 @@ services:
     container_name: celery-worker
     command: celery -A api.src.celery_app worker -l DEBUG -P solo
     env_file:
-      - .env
+      - .celery-worker.env
     volumes:
       - .:/app
     depends_on:
