@@ -209,12 +209,12 @@ def create_merged_results_file(
 
     Parameters
     ----------
-    data_folder       
+    data_folder : str
         Folder where the exported zip files for the diagnostics are stored. Use
         the \code{\link{executeDiagnostics}} function to generate these zip 
         files. Zip files containing results from multiple databases may be 
         placed in the same folder.
-    sqlite_db_path     
+    sqlite_db_path : str
         Output path where sqlite database is placed
     overwrite : bool, optional
         Overwrite existing sqlite lite db if it exists.
@@ -246,40 +246,63 @@ def launch_diagnostics_explorer(
         enable_annotation: bool = True
     ):
     """
-    Launch the Diagnostics Explorer Shiny app
-
-    Launches a Shiny app that allows the user to explore the diagnostics
+    Launches the Diagnostics Explorer Shiny app: a Shiny app that allows the 
+    user to explore the cohort diagnostics.
 
     Parameters
     ----------
-#' @param connectionDetails An object of type \code{connectionDetails} as created using the
-#'                          \code{\link[DatabaseConnector]{createConnectionDetails}} function in the
-#'                          DatabaseConnector package, specifying how to connect to the server where
-#'                          the CohortDiagnostics results have been uploaded using the
-#'                          \code{\link{uploadResults}} function.
-#' @param resultsDatabaseSchema  The schema on the database server where the CohortDiagnostics results
-#'                               have been uploaded.
-#' @param vocabularyDatabaseSchema (Deprecated) Please use vocabularyDatabaseSchemas.
-#' @param vocabularyDatabaseSchemas  (optional) A list of one or more schemas on the database server where the vocabulary tables are located.
-#'                                   The default value is the value of the resultsDatabaseSchema. We can provide a list of vocabulary schema
-#'                                   that might represent different versions of the OMOP vocabulary tables. It allows us to compare the impact
-#'                                   of vocabulary changes on Diagnostics. Not supported with an sqlite database.
-#' @param sqliteDbPath     Path to merged sqlite file. See \code{\link{createMergedResultsFile}} to create file.
-#' @param shinyConfigPath  Path to shiny yml configuration file (use instead of sqliteDbPath or connectionDetails object)
-#' @param runOverNetwork   (optional) Do you want the app to run over your network?
-#' @param port             (optional) Only used if \code{runOverNetwork} = TRUE.
-#' @param launch.browser   Should the app be launched in your default browser, or in a Shiny window.
-#'                         Note: copying to clipboard will not work in a Shiny window.
-#' @param enableAnnotation Enable annotation functionality in shiny app
-#' @param aboutText        Text (using HTML markup) that will be displayed in an About tab in the Shiny app.
-#'                         If not provided, no About tab will be shown.
-#' @param tablePrefix      (Optional)  string to insert before table names (e.g. "cd_") for database table names
-#' @param cohortTableName  (Optional) if cohort table name differs from the standard - cohort (ignores prefix if set)
-#' @param databaseTableName (Optional) if database table name differs from the standard - database (ignores prefix if set)
-#'
-#' @param makePublishable (Optional) copy data files to make app publishable to posit connect/shinyapp.io
-#' @param publishDir      If make publishable is true - the directory that the shiny app is copied to
-#' @param overwritePublishDir      (Optional) If make publishable is true - overwrite the directory for publishing
+    connection_details : RS4
+        An object of type ``connectionDetails`` as created using the
+        ``DatabaseConnector::createConnectionDetails`` function in the
+        DatabaseConnector package, specifying how to connect to the server 
+        where the CohortDiagnostics results have been uploaded using the
+        ``uploadResults`` function.
+    results_database_schema : str
+        The schema on the database server where the CohortDiagnostics results
+        have been uploaded.
+    vocabulary_database_schema : str, deprecated
+        Please use vocabularyDatabaseSchemas.
+    vocabulary_database_schemas : str, optional
+        A list of one or more schemas on the database server where the 
+        vocabulary tables are located. The default value is the value of the 
+        resultsDatabaseSchema. We can provide a list of vocabulary schema that 
+        might represent different versions of the OMOP vocabulary tables. It 
+        allows us to compare the impact of vocabulary changes on Diagnostics. 
+        Not supported with an sqlite database.
+    sqlite_db_path : str
+        Path to merged sqlite file. See ``createMergedResultsFile`` to create 
+        file.
+    shiny_config_path : str
+        Path to shiny yml configuration file (use instead of sqliteDbPath or 
+        connectionDetails object).
+    run_over_network : bool, optional
+        Do you want the app to run over your network?
+    port : int, optional
+        Only used if run_over_network = True.
+    launch_browser : bool, optional
+        Should the app be launched in your default browser, or in a Shiny 
+        window. Note: copying to clipboard will not work in a Shiny window.
+    enable_annotation : bool, optional
+        Enable annotation functionality in shiny app.
+    about_text : str, optional
+        Text (using HTML markup) that will be displayed in an About tab in the 
+        Shiny app. If not provided, no About tab will be shown.
+    table_prefix : str, optional
+        String to insert before table names (e.g. "cd_") for database table 
+        names.
+    cohort_table_name : str, optional
+        If cohort table name differs from the standard - cohort (ignores prefix 
+        if set).
+    database_table_name : str, optional
+        If database table name differs from the standard - database (ignores 
+        prefix if set).
+    make_publishable : bool, optional
+        Copy data files to make app publishable to posit connect/shinyapp.io
+    publish_dir : str, optional
+        The directory that the shiny app is copied to if make_publishable = 
+        True.
+    overwrite_publish_dir : bool, optional
+        Overwrite the directory for publishing if make_publishable = True. 
     """
     if not vocabulary_database_schemas:
         vocabulary_database_schemas = results_database_schema
