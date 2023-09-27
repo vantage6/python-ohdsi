@@ -3,6 +3,7 @@
 [![PyPI DatabaseConnector](https://badge.fury.io/py/ohdsi-database-connector.svg)](https://badge.fury.io/py/ohdsi-database-connector)
 [![PyPI FeatureExtraction](https://badge.fury.io/py/ohdsi-feature-extraction.svg)](https://badge.fury.io/py/ohdsi-feature-extraction)
 [![PyPI SQLRender](https://badge.fury.io/py/ohdsi-sqlrender.svg)](https://badge.fury.io/py/ohdsi-sqlrender)
+[![PyPI CohortDiagnostics](https://badge.fury.io/py/ohdsi-cohort-diagnostics)](https://badge.fury.io/py/ohdsi-cohort-diagnostics)
 
 Python wrappers for (some) OHDSI tools. This project has been initiated for
 supporting OMOP data sources in [vantage6](https://vantage6.ai).
@@ -64,6 +65,15 @@ when a file is changed.
 You can set the `IGNORE_R_IMPORTS` environment variable to ignore the R imports
 in the documentation. This is useful when you don't have the R packages
 installed but want to build the documentation anyway.
+
+## Release
+```bash
+make set-version VERSION=x.x.x
+```
+* If you created a new package add it to the Maketools 
+* Create release on Github
+
+
 
 ## User Documentation
 The user documentation can be found at [readthedocs](https://python-ohdsi.readthedocs.io/en/latest/).
