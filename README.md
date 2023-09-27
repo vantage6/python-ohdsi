@@ -65,5 +65,12 @@ You can set the `IGNORE_R_IMPORTS` environment variable to ignore the R imports
 in the documentation. This is useful when you don't have the R packages
 installed but want to build the documentation anyway.
 
+## Release
+```bash
+make set-version VERSION=x.x.x
+```
+
+Create release on Github.
+
 ## User Documentation
 The user documentation can be found at [readthedocs](https://python-ohdsi.readthedocs.io/en/latest/).
