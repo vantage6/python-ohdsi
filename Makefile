@@ -5,7 +5,8 @@ PACKAGES = \
 	database-connector \
 	sqlrender \
 	feature-extraction \
-	common
+	common \
+	cohort-diagnostics
 
 help:
 	@echo "install       - install all packages"
