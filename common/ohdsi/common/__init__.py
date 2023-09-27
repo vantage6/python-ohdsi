@@ -27,6 +27,17 @@ def to_snake_case(name: str) -> str:
     return pattern.sub('_', name).lower()
 
 
+def to_camel_case(snake_str):
+    return "".join(x.capitalize() for x in snake_str.lower().split("_"))
+
+
+def to_lower_camel_case(snake_str):
+    # We capitalize the first letter of each component except the first one
+    # with the 'capitalize' method and join them together.
+    camel_string = to_camel_case(snake_str)
+    return snake_str[0].lower() + camel_string[1:]
+
+
 # https://medium.com/appsflyerengineering/running-r-model-in-a-python-environment-7e8971dfe5f9
 def convert_df_dates_from_r(df: pd.DataFrame, date_cols: 'list[str]' = None) \
         -> pd.DataFrame:
