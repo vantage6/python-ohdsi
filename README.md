@@ -20,7 +20,13 @@ Interact with the OMOP database using a python interface.
 * Install R packages
 
 ```bash
-pip install python-ohdsi
+pip install ohdsi-common
+pip install ohdsi-sqlrender
+pip install ohdsi-circe
+pip install ohdsi-database-connector
+pip install ohdsi-feature-extraction
+pip install ohdsi-cohort-generator
+pip install ohdsi-cohort-diagnostics
 ```
 
 ### API service
