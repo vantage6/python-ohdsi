@@ -27,7 +27,7 @@ setup(
     python_requires='>=3.10',
     install_requires=[
         'rpy2==3.5.12',
-        'pandas==2.0.3',
+        'pandas==2.3.1',
     ],
     extras_require={
         'dev': []
