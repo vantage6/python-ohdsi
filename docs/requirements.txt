@@ -1,12 +1,14 @@
--r ../common/requirements.txt
--r ../database-connector/requirements.txt
--r ../cohort-generator/requirements.txt
--r ../circe/requirements.txt
--r ../sqlrender/requirements.txt
--r ../feature-extraction/requirements.txt
 sphinx==5.3.0
 sphinx-autobuild
 sphinx-autodoc-typehints
 sphinx-click==4.4.0
 sphinxcontrib-plantuml
 furo==2022.12.7
+ohdsi-circe
+ohdsi-cohort-generator
+ohdsi-database-connector
+ohdsi-sqlrender
+ohdsi-feature-extraction
+ohdsi-common
+ohdsi-cohort-diagnostics
+
