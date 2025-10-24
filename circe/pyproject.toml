@@ -6,8 +6,8 @@ build-backend = "hatchling.build"
 name = "ohdsi-circe"
 dynamic = ["version"]
 description = "Python wrapper for the OHDSI R packages"
-readme = "../README.md"
-license = {file = "../LICENSE"}
+readme = "README.md"
+license = {file = "LICENSE"}
 requires-python = ">=3.13"
 authors = [
     {name = "Vantage6 Team"}
@@ -46,10 +46,13 @@ path = "../VERSION"
 pattern = '"(?P<version>.*)"'
 
 [tool.hatch.build.targets.wheel]
-packages = ["ohdsi/circe"]
+packages = ["ohdsi"]
 
 [tool.hatch.build.targets.wheel.sources]
 "ohdsi" = "ohdsi"
+
+[tool.hatch.build.targets.sdist.force-include]
+"ohdsi/circe/data/" = "ohdsi/circe/data/"
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -62,5 +65,3 @@ include = [
 [tool.hatch.metadata]
 allow-direct-references = true
 
-[tool.hatch.build.targets.wheel.force-include]
-"ohdsi/circe/data/*.json" = "ohdsi/circe/data/"
