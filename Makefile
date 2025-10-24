@@ -9,20 +9,20 @@ PACKAGES = \
 	cohort-diagnostics
 
 help:
-	@echo "install       - install all packages"
-	@echo "install-dev   - install all packages in editable mode"
-	@echo "build         - build all packages"
-	@echo "publish       - publish all packages to pypi"
+	@echo "install       - install all packages using uv"
+	@echo "install-dev   - install all packages in editable mode using uv"
+	@echo "build         - build all packages using uv"
+	@echo "publish       - publish all packages to pypi using uv"
 	@echo "                Usage: make publish USERNAME=user PASSWORD=pass"
 	@echo "set-version   - set the version of all packages, needs VERSION"
 
 set-version:
-	echo $(VERSION) > VERSION;
+	echo '"$(VERSION)"' > VERSION
 
 
 install:
 	$(foreach package, $(PACKAGES), \
-		cd $(package) && pip install $(INSTALL_FLAGS) . && cd ..; \
+		cd $(package) && uv pip install $(INSTALL_FLAGS) . && cd ..; \
 	)
 
 install-dev:
@@ -30,7 +30,7 @@ install-dev:
 
 build:
 	$(foreach package, $(PACKAGES), \
-		cd $(package) && pip build . && cd ..; \
+		cd $(package) && uv build . && cd ..; \
 	)
 
 publish:
@@ -41,7 +41,6 @@ publish:
 	fi
 	# publish after you have built the packages
 	$(foreach package, $(PACKAGES), \
-		cd $(package) && twine upload --repository pypi dist/* \
-		--username $(USERNAME) --password $(PASSWORD) --disable-progress-bar && cd ..; \
+		cd $(package) && uv publish --username $(USERNAME) --password $(PASSWORD) && cd ..; \
 	)
 
