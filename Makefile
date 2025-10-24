@@ -17,9 +17,7 @@ help:
 	@echo "set-version   - set the version of all packages, needs VERSION"
 
 set-version:
-	$(foreach package, $(PACKAGES), \
-		echo $(VERSION) > $(package)/VERSION; \
-	)
+	echo '"$(VERSION)"' > VERSION
 
 
 install:
