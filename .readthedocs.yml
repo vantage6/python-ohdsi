@@ -1,6 +1,10 @@
 # readthedocs configuration file version
 version: 2
 
+sphinx:
+  # Path to your Sphinx configuration file.
+  configuration: docs/conf.py
+
 build:
   os: ubuntu-22.04
   tools:
