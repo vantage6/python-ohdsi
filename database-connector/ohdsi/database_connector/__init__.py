@@ -86,10 +86,8 @@ def create_connection_details(
     # The jar required is shipped with the package
     if not path_to_driver:
         jar = files('ohdsi.database_connector.java')
-        # Hack to get the path to the folder of driver jar file,
-        # as the files method returns a MultiPlexPath object which
-        # does not allow simple conversion to string.
-        path_to_driver = str(jar.joinpath(''))
+        # Get the path to the folder of driver jar file
+        path_to_driver = str(jar._paths[0])
 
     input_args = {
         "dbms": dbms, "user": user, "password": password,
@@ -162,10 +160,8 @@ def connect(connection_details: ListVector | None = None,
     # The jar required is shipped with the package
     if not path_to_driver:
         jar = files('ohdsi.database_connector.java')
-        # Hack to get the path to the folder of driver jar file,
-        # as the files method returns a MultiPlexPath object which
-        # does not allow simple conversion to string.
-        path_to_driver = str(jar.joinpath(''))
+        # Get the path to the folder of driver jar file
+        path_to_driver = str(jar._paths[0])
 
     input_args = {
         "connectionDetails": connection_details,
